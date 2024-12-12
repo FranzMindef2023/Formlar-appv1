@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: db_personaml
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  # Backend - Laravel
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: laravel_backend
+    restart: always
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: db_personaml
+      DB_USERNAME: postgres
+      DB_PASSWORD: 123
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  # Frontend - React
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    restart: always
+    volumes:
+      - ./frontend:/usr/src/app
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  # JasperReports (opcional)
+  jasperserver:
+    image: bitnami/jasperreports:latest
+    container_name: jasperserver
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      JASPERREPORTS_DATABASE_HOST: postgres
+      JASPERREPORTS_DATABASE_PORT_NUMBER: 5432
+      JASPERREPORTS_DATABASE_NAME: db_personaml
+      JASPERREPORTS_DATABASE_USER: postgres
+      JASPERREPORTS_DATABASE_PASSWORD: 123
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+# Volúmenes
+volumes:
+  pg_data:
+  jasper_reports:
+
+# Redes
+networks:
+  app-network:
