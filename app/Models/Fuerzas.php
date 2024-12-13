@@ -22,7 +22,7 @@ class Fuerzas extends Model implements Auditable
      * @var array<int, string>
      */
     protected $fillable = [
-        'fuerza',       
+        'fuerza',
         'status'
     ];
 

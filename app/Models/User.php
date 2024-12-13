@@ -53,8 +53,6 @@ class User extends Authenticatable implements JWTSubject,Auditable
         'usuario',    // Nombre de usuario
         'password',   // Contraseña
         'status',     // Estado
-        'idorg',
-        'idpuesto'
     ];
 
     /**

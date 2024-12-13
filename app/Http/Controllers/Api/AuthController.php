@@ -17,14 +17,14 @@ use Carbon\Carbon;
 
 class AuthController extends Controller
 {
-   /**
+    /**
      * Create a new AuthController instance.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -40,14 +40,13 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['status' => false, 'message' => 'Credenciales incorrectas'], 401);
         }
-    
+
         // Actualizar la fecha de último inicio de sesión
         $user = auth()->user();
         $user->update(['last_login' => now()]);
-    
+
         // Responder con el token y los datos del usuario
         return $this->respondWithToken($token);
-
     }
 
     /**
@@ -116,34 +115,33 @@ class AuthController extends Controller
         ], 200);
     }
     public function register(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'ci' => 'required|string|unique:users,ci',
-        'grado' => 'required|string|min:3|max:30',
-        'nombres' => 'required|string|min:3|max:255',
-        'appaterno' => 'nullable|string|min:3|max:255',
-        'apmaterno' => 'nullable|string|min:3|max:255',
-        'email' => 'nullable|email|unique:users,email',
-        'celular' => 'required|digits_between:8,15',
-        'usuario' => 'required|string|min:3|max:255|unique:users,usuario',
-        'password' => 'required|min:8',
-        'status' => 'required|boolean',
-        'idorg' => 'required|integer|exists:organizacion,idorg',
-        'idpuesto' => 'required|integer|exists:puestos,idpuesto',
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'ci' => 'required|string|unique:users,ci',
+            'grado' => 'required|string|min:3|max:30',
+            'nombres' => 'required|string|min:3|max:255',
+            'appaterno' => 'nullable|string|min:3|max:255',
+            'apmaterno' => 'nullable|string|min:3|max:255',
+            'email' => 'nullable|email|unique:users,email',
+            'celular' => 'required|digits_between:8,15',
+            'usuario' => 'required|string|min:3|max:255|unique:users,usuario',
+            'password' => 'required|min:8',
+            'status' => 'required|boolean',
+        ]);
 
-    if ($validator->fails()) {
-        return response()->json($validator->errors()->toJson(), 400);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        // return $request->all();
+        $user = User::create(array_merge(
+            $validator->validated(),
+            ['password' => bcrypt($request->password)]
+        ));
+
+        return response()->json([
+            'message' => 'Usuario registrado correctamente',
+            'user' => $user
+        ], 200);
     }
-    // return $request->all();
-    $user = User::create(array_merge(
-        $validator->validated(),
-        ['password' => bcrypt($request->password)]
-    ));
+}
 
-    return response()->json([
-        'message' => 'Usuario registrado correctamente',
-        'user' => $user
-    ], 200);
-}
-}
