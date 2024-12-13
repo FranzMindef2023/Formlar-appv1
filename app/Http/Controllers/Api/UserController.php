@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
-use App\Models\User;
+use App\Models\User; // <- Importación de User
 use App\Models\UserRole;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +42,12 @@ class UserController extends Controller
                 DB::raw("CASE WHEN users.status = true THEN 'Activo' ELSE 'Inactivo' END as estado"), // Transformar estado
                 DB::raw("TO_CHAR(users.created_at, 'DD/MM/YYYY HH24:MI:SS') as fcreate"), // Formatear created_at
                 DB::raw("TO_CHAR(users.updated_at, 'DD/MM/YYYY HH24:MI:SS') as fupdate"), // Formatear updated_at
+                'puestos.nompuesto as puesto', // Nombre del puesto
+                'organizacion.nomorg as organizacion', // Nombre de la organización
+                'organizacion.sigla as sigla' // Sigla de la organización
             ])
+                ->join('puestos', 'users.idpuesto', '=', 'puestos.idpuesto') // Join con la tabla puestos
+                ->join('organizacion', 'users.idorg', '=', 'organizacion.idorg') // Join con la tabla organizacion
                 ->get();
 
             // Verificar si no se encontraron puesto

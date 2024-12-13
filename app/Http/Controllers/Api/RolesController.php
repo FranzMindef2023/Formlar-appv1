@@ -43,6 +43,7 @@ class RolesController extends Controller
                 'message' => 'Roles encontrados',
                 'data' => $roles
             ], 200);
+
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Manejar el caso cuando no se encuentran roles (404)
             return response()->json([
@@ -81,6 +82,7 @@ class RolesController extends Controller
                 'message' => 'Rol de usuario registrado correctamente',
                 'data' => $role,
             ], 200);
+
         } catch (ValidationException $e) {
             // Maneja errores de validación y devuelve un código 422
             return response()->json([
@@ -88,6 +90,7 @@ class RolesController extends Controller
                 'message' => 'Errores de validación',
                 'errors' => $e->errors(), // Devuelve los errores de validación en detalle
             ], 422);
+
         } catch (\Throwable $th) {
             // Maneja otros errores generales
             return response()->json([
@@ -174,4 +177,6 @@ class RolesController extends Controller
     {
         //
     }
+
+
 }

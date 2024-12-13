@@ -34,6 +34,7 @@ class FuerzasController extends Controller
                 'message' => 'Fuerzas encontradas',
                 'data' => $fuerzas
             ], 200);
+
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Manejar el caso cuando no se encuentran fuerzas (404)
             return response()->json([

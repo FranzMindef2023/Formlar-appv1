@@ -25,7 +25,12 @@ return new class extends Migration
             $table->boolean('status');                   // bool
             $table->string('token')->nullable();         // varchar, nullable
             $table->timestamp('last_login')->nullable(); // Timestamp for last login, nullable
+            $table->unsignedBigInteger('idorg');
+            $table->unsignedBigInteger('idpuesto');
             $table->timestamps();                        // created_at & updated_at timestamps
+            // Foreign keys
+            $table->foreign('idorg')->references('idorg')->on('organizacion')->onDelete('cascade');
+            $table->foreign('idpuesto')->references('idpuesto')->on('puestos')->onDelete('cascade');
         });
     }
 

@@ -11,6 +11,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([]);
+        $this->call([
+            ArmasSeeder::class,
+            EspecialidadesSeeder::class,
+            FuerzasSeeder::class,
+            GradosSeeder::class,
+            MaritalStatusSeeder::class,
+            OrganizacionSeeder::class,
+            PuestosSeeder::class,
+            SexosSeeder::class,
+            TiponovSeeder::class,
+            ExpedicionesSeeder::class,
+            SituacionesSeeder::class,
+        ]);
     }
 }

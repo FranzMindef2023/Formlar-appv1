@@ -17,7 +17,6 @@ return new class extends Migration
             $table->boolean('status');         // varchar(50)
             $table->timestamps();  // created_at & updated_at timestamps
         });
-
     }
 
     /**
