@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fuerzas', function (Blueprint $table) {
-            $table->increments('idfuerza');  
-            $table->string('fuerza', 50); 
+            $table->increments('idfuerza');
+            $table->string('fuerza', 50);
             $table->boolean('status');         // varchar(50)
             $table->timestamps();  // created_at & updated_at timestamps
         });
-        
+
     }
 
     /**

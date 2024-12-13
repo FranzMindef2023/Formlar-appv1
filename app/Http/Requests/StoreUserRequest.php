@@ -44,8 +44,8 @@ class StoreUserRequest extends FormRequest
             'password' => 'nullable|string|min:8|max:250',
             'status' => 'required|boolean',
             'token' => 'nullable|string|max:191',
-            'idorg' => 'required|integer|exists:organizacion,idorg',
-            'idpuesto' => 'required|integer|exists:puestos,idpuesto',
+            /* 'idorg' => 'required|integer|exists:organizacion,idorg', */
+            /* 'idpuesto' => 'required|integer|exists:puestos,idpuesto', */
         ];
     }
 
