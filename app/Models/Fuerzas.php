@@ -16,7 +16,7 @@ class Fuerzas extends Model implements Auditable
     // Establecer la clave primaria
     protected $primaryKey = 'idfuerza';
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
