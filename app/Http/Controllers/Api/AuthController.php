@@ -32,6 +32,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function login()
     {
         $credentials = request(['email', 'password']);
@@ -144,4 +145,3 @@ class AuthController extends Controller
         ], 200);
     }
 }
-

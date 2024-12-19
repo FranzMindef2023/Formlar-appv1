@@ -40,12 +40,11 @@ Route::group([
 
 Route::post('roldeusuario', [UserController::class, 'asignarRoles']);
 
-Route::apiResource('usuarios', UserController::class);
 
-Route::middleware(['jwt.verify'])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     Route::get('showroluser/{id}',  [UserController::class, 'showroluser']);
+    Route::apiResource('usuarios', UserController::class);
     Route::apiResource('roles', RolesController::class);
-
 
     Route::apiResource('fuerzas', FuerzasController::class);
 });

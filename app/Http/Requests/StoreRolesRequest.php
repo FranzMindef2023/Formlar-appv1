@@ -26,12 +26,14 @@ class StoreRolesRequest extends FormRequest
     {
         $id = $this->route('role') ?? null;
         return [
-            'rol' =>['required',
-                    'string',
-                    'min:3',
-                    'max:30',
-                    Rule::unique('roles', 'rol')->ignore($id, 'idrol')],
-                    'status' => 'required|boolean',
+            'rol' => [
+                'required',
+                'string',
+                'min:3',
+                'max:30',
+                Rule::unique('roles', 'rol')->ignore($id, 'idrol')
+            ],
+            'status' => 'required|boolean',
         ];
     }
     public function messages()
