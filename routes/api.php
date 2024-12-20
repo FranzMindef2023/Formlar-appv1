@@ -38,13 +38,11 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
 });
 
+Route::apiResource('fuerzas', FuerzasController::class);
 Route::post('roldeusuario', [UserController::class, 'asignarRoles']);
 
-
-Route::middleware(['auth:api'])->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::get('showroluser/{id}',  [UserController::class, 'showroluser']);
-    Route::apiResource('usuarios', UserController::class);
     Route::apiResource('roles', RolesController::class);
-
-    Route::apiResource('fuerzas', FuerzasController::class);
+    Route::apiResource('usuarios', UserController::class);
 });

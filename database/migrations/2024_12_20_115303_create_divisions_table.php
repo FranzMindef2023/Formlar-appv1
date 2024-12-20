@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id('idrol');
-            $table->string('rol');
-            $table->boolean('status');
+        Schema::create('divisions', function (Blueprint $table) {
+            $table->id('codigo');
+            $table->text('division');
+            $table->unsignedBigInteger('codigo_departamento');
 
+            $table->foreign('codigo_departamento')->references('codigo')->on('departamentos');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('divisions');
     }
 };

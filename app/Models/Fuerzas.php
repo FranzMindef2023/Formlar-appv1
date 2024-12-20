@@ -13,7 +13,7 @@ class Fuerzas extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasApiTokens, HasFactory, Notifiable;
-    // Establecer la clave primaria
+
     protected $primaryKey = 'idfuerza';
 
     /**

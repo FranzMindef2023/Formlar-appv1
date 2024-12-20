@@ -24,36 +24,14 @@ class UserController extends Controller
     {
         try {
             // Obtener todas las organizaciones de la base de datos
-            $users = User::select([
-                'users.iduser as id',
-                'users.grado',
-                'users.appaterno',
-                'users.apmaterno',
-                'users.nombres',
-                'users.ci',
-                DB::raw("CONCAT(users.grado, ' ', users.appaterno, ' ', users.apmaterno, ' ', users.nombres) as name"), // Concatenar las columnas
-                'users.email',
-                'users.celular',
-                'users.usuario',
-                'users.idorg',
-                'users.idpuesto',
-                'users.status',
-                DB::raw("TO_CHAR(users.last_login, 'DD/MM/YYYY HH24:MI:SS') as lastlogin"), // Formatear fecha de último login
-                DB::raw("CASE WHEN users.status = true THEN 'Activo' ELSE 'Inactivo' END as estado"), // Transformar estado
-                DB::raw("TO_CHAR(users.created_at, 'DD/MM/YYYY HH24:MI:SS') as fcreate"), // Formatear created_at
-                DB::raw("TO_CHAR(users.updated_at, 'DD/MM/YYYY HH24:MI:SS') as fupdate"), // Formatear updated_at
-                'puestos.nompuesto as puesto', // Nombre del puesto
-                'organizacion.nomorg as organizacion', // Nombre de la organización
-                'organizacion.sigla as sigla' // Sigla de la organización
-            ])
-                ->join('puestos', 'users.idpuesto', '=', 'puestos.idpuesto') // Join con la tabla puestos
-                ->join('organizacion', 'users.idorg', '=', 'organizacion.idorg') // Join con la tabla organizacion
-                ->get();
+            $users = User::all();
 
             // Verificar si no se encontraron puesto
             if ($users->isEmpty()) {
-                // Si no se encuentra ninguna organización, retornar un error 404
-                throw new \Illuminate\Database\Eloquent\ModelNotFoundException('No se encontraron puestos.');
+                return response()->json([
+                    "status" => false,
+                    "message" => "la lista de usuarios esta vacia",
+                ]);
             }
 
             // Retornar una respuesta exitosa con los datos encontrados
