@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\AuthController;
-
-
+use App\Http\Controllers\Api\CentrosReclutamientoController;
+use App\Http\Controllers\Api\DepartamentoController;
+use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\FuerzasController;
 
 /*
@@ -39,6 +40,10 @@ Route::group([
 });
 
 Route::apiResource('fuerzas', FuerzasController::class);
+Route::apiResource('departamentos', DepartamentoController::class);
+Route::apiResource('divisiones', DivisionController::class);
+Route::apiResource('centros_reclutamiento', CentrosReclutamientoController::class);
+
 Route::post('roldeusuario', [UserController::class, 'asignarRoles']);
 
 Route::middleware('auth:api')->group(function () {

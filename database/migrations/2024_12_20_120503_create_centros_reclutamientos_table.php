@@ -16,8 +16,11 @@ return new class extends Migration
             $table->text('codigo');
             $table->text('regimiento');
             $table->unsignedBigInteger('codigo_division');
+            $table->unsignedBigInteger('id_fuerza');
+            $table->integer('prioridad');
 
             $table->foreign('codigo_division')->references('codigo')->on('divisions');
+            $table->foreign('id_fuerza')->references('idfuerza')->on('fuerzas');
 
 
             $table->timestamps();

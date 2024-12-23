@@ -1,17 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Models\Division;
 use Illuminate\Http\Request;
 
-class CentrosReclutamiento extends Controller
+class DivisionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $divisiones = Division::all();
+
+        if ($divisiones->isEmpty()) {
+            return response()->json([
+                "message" => "divisiones is empty",
+            ]);
+        }
+
+        return response()->json([
+            "data" => $divisiones,
+            "message" => "divisiones retrieved successfully",
+        ]);
     }
 
     /**
