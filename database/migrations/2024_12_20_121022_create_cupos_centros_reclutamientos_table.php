@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_centros_reclutamiento');
             $table->unsignedBigInteger('codigo_division');
 
-            $table->integer('cupo');
+            $table->unsignedBigInteger('cupo');
 
             $table->foreign('id_centros_reclutamiento')->references('id')->on('centros_reclutamientos');
             $table->foreign('codigo_division')->references('codigo')->on('divisions');

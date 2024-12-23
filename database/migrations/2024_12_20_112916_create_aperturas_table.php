@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('aperturas', function (Blueprint $table) {
-            $table->id("gestion");
-            $table->text("cantidad");
+            $table->unsignedBigInteger("gestion")->unique()->primary();
+            $table->unsignedBigInteger("cantidad");
             $table->date("fecha_limite");
             $table->timestamp("fecha_apertura");
             $table->integer("edad_min");

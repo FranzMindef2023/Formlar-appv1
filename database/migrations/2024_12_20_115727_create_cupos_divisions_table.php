@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cupos_divisions', function (Blueprint $table) {
+            $table->id();
             $table->unsignedInteger("codigo_division");
             $table->unsignedBigInteger("cupos");
-            $table->unsignedInteger("gestion_apertura");
+            $table->unsignedBigInteger("gestion_apertura");
 
             $table->foreign("codigo_division")->references("codigo")->on("divisions");
             $table->foreign("gestion_apertura")->references("gestion")->on("aperturas");

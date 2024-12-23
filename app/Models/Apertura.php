@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Apertura extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+    protected $primaryKey = "gestion";
 }
