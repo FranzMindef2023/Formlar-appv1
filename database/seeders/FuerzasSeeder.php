@@ -15,10 +15,10 @@ class FuerzasSeeder extends Seeder
     {
         $statuses = [
             [
-            'fuerza' => 'EJERCITO DE BOLIVIA',
-            'status' => true,
-            'created_at' => now(),
-            'updated_at' => now()
+                'fuerza' => 'EJERCITO DE BOLIVIA',
+                'status' => true,
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'fuerza' => 'FUERZA AEREA',

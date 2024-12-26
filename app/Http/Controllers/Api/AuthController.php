@@ -95,7 +95,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Inicio de sesión exitoso',
+            'message' => 'Inicio de sesion exitoso',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60, // Tiempo de expiración en segundos

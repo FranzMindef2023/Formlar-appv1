@@ -28,13 +28,11 @@ class FuerzasController extends Controller
                 throw new \Illuminate\Database\Eloquent\ModelNotFoundException('No se encontraron fuerzas.');
             }
 
-            // Retornar una respuesta exitosa con los datos transformados
             return response()->json([
                 'status' => true,
                 'message' => 'Fuerzas encontradas',
                 'data' => $fuerzas
             ], 200);
-
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Manejar el caso cuando no se encuentran fuerzas (404)
             return response()->json([

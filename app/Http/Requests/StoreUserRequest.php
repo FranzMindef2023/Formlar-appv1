@@ -7,6 +7,12 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
+
+/**
+ * @property string $ci
+ * @property string $grado
+ * @property string $nombres
+ */
 class StoreUserRequest extends FormRequest
 {
     public function authorize()

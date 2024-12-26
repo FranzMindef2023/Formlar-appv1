@@ -9,7 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable implements JWTSubject,Auditable
+class User extends Authenticatable implements JWTSubject, Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasApiTokens, HasFactory, Notifiable;
