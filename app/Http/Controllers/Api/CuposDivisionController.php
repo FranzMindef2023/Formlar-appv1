@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCuposDivisionRequest;
+use App\Http\Requests\UpdateCuposDivisionRequest;
 use App\Models\Apertura;
 use App\Models\CuposDivision;
 use Illuminate\Http\Request;
@@ -13,20 +14,33 @@ class CuposDivisionController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    private function successResponse($data, $message = '', $status = 200)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => $message
+        ], $status);
+    }
+    private function errorResponse($error = 'Something went wrong!', $message = 'Something went wrong!', $status = 400)
+    {
+        return response()->json([
+            'success' => false,
+            'error' => $error,
+            'message' => $message
+        ], $status);
+    }
     public function index()
     {
         $cupos_divisiones = CuposDivision::all();
 
         if ($cupos_divisiones->isEmpty()) {
-            return response()->json([
-                'message' => 'cupos divisiones is empty',
-            ]);
+
+            return $this->errorResponse(null, 'Cupos divisiones is empty.', 404);
         }
 
-        return response()->json([
-            'data' => $cupos_divisiones,
-            'message' => 'cupos divisiones retrieved successfully',
-        ]);
+        return $this->successResponse($cupos_divisiones, 'Cupos divisones retrieved successfully', 200);
     }
 
     /**
@@ -37,27 +51,21 @@ class CuposDivisionController extends Controller
 
 
         try {
-            $total = Apertura::firstWhere('gestion', date('Y'))->cantidad;
+            $total = Apertura::firstWhere('gestion', date('Y'));
+            if (!$total) {
+                return $this->errorResponse(null, 'No se ha abierto una apertura para la presente gestion');
+            }
             $actual_quantity = CuposDivision::where('gestion_apertura', date('Y'))->sum('cupos');
 
-            if ($actual_quantity + $request->cupos > $total) {
-                return response()->json([
-                    'message' => 'la cantidad total de cupos no puede exceder el limite definido para la gestion actual.',
-                ], 422);
+            if ($actual_quantity + $request->cupos > $total->cantidad) {
+                return $this->errorResponse('La cantidad de cupos disponibles para asignar a la apertura de la presente gestion es ' . $total->cantidad - $actual_quantity, 'La cantidad total de cupos no puede exceder el limite definido para la gestion actual.', 422);
             }
 
             $cupos_division = CuposDivision::create($request->all());
 
-
-            return response()->json([
-                'data' => $cupos_division,
-                'message' => 'cupos for the division created successfully',
-            ]);
+            return $this->successResponse($cupos_division, 'Cupos division created successfully.', 201);
         } catch (\Exception $th) {
-            return response()->json([
-                'message' => 'something went wrong.',
-                'error' => $th->getMessage(),
-            ]);
+            return $this->errorResponse($th->getMessage());
         }
     }
 
@@ -72,9 +80,28 @@ class CuposDivisionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCuposDivisionRequest $request, string $id)
     {
-        //
+        try {
+            $cupos_division = CuposDivision::findOrFail($id);
+
+            $total = Apertura::firstWhere('gestion', $request->gestion_apertura);
+            if (!$total) {
+                return $this->errorResponse(null, 'No se ha abierto una apertura para la presente gestion');
+            }
+
+            $actual_quantity = CuposDivision::where('gestion_apertura', $request->gestion_apertura)->sum('cupos');
+
+            if ($actual_quantity + $request->cupos > $total->cantidad + $cupos_division->cupos) {
+                return $this->errorResponse('La cantidad de cupos disponibles para actualizar a la apertura de la gestion ' . $request->gestion_apertura . ' de la ' . $request->codigo_division . ' division es ' . $total->cantidad - $actual_quantity + $cupos_division->cupos, 'La cantidad total de cupos no puede exceder el limite definido para la gestion' . $request->gestion_apertura, 422);
+            }
+
+            $cupos_division->update($request->validated());
+
+            return $this->successResponse($cupos_division, 'Cupos division updated successfully.', 201);
+        } catch (\Exception $th) {
+            return $this->errorResponse($th->getMessage());
+        }
     }
 
     /**

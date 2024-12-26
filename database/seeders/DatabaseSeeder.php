@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             DivisionSeeder::class,
             CentrosReclutamientoSeeder::class,
             UserSeeder::class,
+            AperturaSeeder::class,
         ]);
     }
 }

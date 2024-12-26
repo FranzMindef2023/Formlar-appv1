@@ -11,20 +11,32 @@ class CentrosReclutamientoController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    private function successResponse($data, $message = '', $status = 200)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => $message,
+        ], $status);
+    }
+    private function errorResponse($error = 'Something went wrong!', $message = '', $status = 400)
+    {
+        return response()->json([
+            'success' => false,
+            'error' => $error,
+            'message' => $message,
+        ], $status);
+    }
     public function index()
     {
         $centros_reclutamiento =  CentrosReclutamiento::all();
 
         if ($centros_reclutamiento->isEmpty()) {
-            return response()->json([
-                "message" => "centros_reclutamiento is empty",
-            ]);
+            return $this->errorResponse(null, 'Centros reclutamiento is empty', 404);
         }
 
-        return response()->json([
-            "data" => $centros_reclutamiento,
-            "message" => "centros_reclutamiento retrieved successfully",
-        ]);
+        return $this->successResponse($centros_reclutamiento, 'Centros reclutamiento retrieved successfully');
     }
 
     /**

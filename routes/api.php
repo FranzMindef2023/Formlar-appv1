@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CentrosReclutamientoController;
+use App\Http\Controllers\Api\CuposCentrosReclutamientoController;
 use App\Http\Controllers\Api\CuposDivisionController;
 use App\Http\Controllers\Api\DepartamentoController;
 use App\Http\Controllers\Api\DivisionController;
@@ -22,15 +23,15 @@ Route::group([
     Route::post('register', [AuthController::class, 'register']);
     Route::post('me', [AuthController::class, 'me']);
 });
-
-
-
-Route::apiResource('centros-reclutamiento', CentrosReclutamientoController::class);
-Route::apiResource('cupos-division', CuposDivisionController::class);
-Route::apiResource('aperturas', AperturaController::class);
 Route::post('assign-role', [UserController::class, 'asignarRoles']);
 
+Route::apiResource('aperturas', AperturaController::class);
+Route::apiResource('cupos-division', CuposDivisionController::class);
+Route::apiResource('centros-reclutamiento', CentrosReclutamientoController::class);
+Route::apiResource('cupos-centros-reclutamiento', CuposCentrosReclutamientoController::class);
+
 Route::middleware('auth:api')->group(function () {
+
     Route::apiResource('fuerzas', FuerzasController::class);
     Route::apiResource('departamentos', DepartamentoController::class);
     Route::apiResource('divisiones', DivisionController::class);

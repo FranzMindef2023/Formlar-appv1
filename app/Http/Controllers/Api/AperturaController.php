@@ -4,55 +4,73 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAperturaRequest;
+use App\Http\Requests\UpdateAperturaRequest;
 use App\Models\Apertura;
 use Illuminate\Http\Request;
 
 class AperturaController extends Controller
 {
+    private function successResponse($data, string $message = 'Success', int $status = 200)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => $message,
+        ], $status);
+    }
+
+    private function errorResponse($error, string  $message = 'Something went wrong!', int $status = 400)
+    {
+        return response()->json([
+            'success' => false,
+            'error' => $error,
+            'message' => $message,
+        ], $status);
+    }
+
     public function index()
     {
-        $aperturas =  Apertura::all();
+        $aperturas = Apertura::all();
+
 
         if ($aperturas->isEmpty()) {
-            return response()->json([
-                'message' => 'aperturas list is empty',
-            ], 404);
+            return $this->errorResponse(null, 'Aperturas list is empty', 404);
         }
 
-        return response()->json([
-            'data' => $aperturas,
-            'message' => 'aperturas list retrieved successfully',
-        ], 200);
+        return $this->successResponse($aperturas, 'Aperturas list retrieved successfully');
     }
 
     public function store(StoreAperturaRequest $request)
     {
         try {
-            $apertura = Apertura::create($request->all());
-            return response()->json([
-                'data' => $apertura,
-                'message' => 'apertura created successfully',
-            ]);
-        } catch (\Exception $th) {
-            return response()->json([
-                'message' => 'something went wrong.',
-                'error' => $th->getMessage(),
-            ]);
+            $apertura = Apertura::create($request->validated());
+            return $this->successResponse($apertura, 'Apertura created successfully', 201);
+        } catch (\Exception $e) {
+
+            return $this->errorResponse($e, 'An unexpected error occurred. Please try again.', 500);
         }
     }
+
     public function show(string $id)
     {
-        $apertura = Apertura::find($id);
+        try {
+            $apertura = Apertura::findOrFail($id);
 
-        if (!$apertura) {
-            return response()->json([
-                'message' => 'apertura not found',
-            ]);
+            return $this->successResponse($apertura, 'Apertura found.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->errorResponse($e, 'Apertura not found', 404);
         }
+    }
 
-        return response()->json([
-            'data' => $apertura,
-            'message' => 'apertura found.',
-        ]);
+    public function update(string $id, Request $request)
+    {
+        try {
+            $apertura = Apertura::findOrFail($id);
+            $apertura->update($request->validated());
+
+            return $this->successResponse($apertura, 'Apertura updated.', 201);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->errorResponse($e, 'Apertura not found', 404);
+        }
     }
 }

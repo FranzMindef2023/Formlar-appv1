@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreCuposDivisionRequest extends FormRequest
+class UpdateCuposDivisionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,19 +26,7 @@ class StoreCuposDivisionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'codigo_division' => [
-                'required',
-                'integer',
-                'between:1,10',
-                function ($attribute, $value, $fail) {
-                    if (\App\Models\CuposDivision::where('codigo_division', $value)
-                        ->where('gestion_apertura', $this->input('gestion_apertura'))
-                        ->exists()
-                    ) {
-                        $fail('la division ' . $value . ' ya tiene cupos asignados para esta gestion.');
-                    }
-                }
-            ],
+            'codigo_division' => 'required|integer|between:1,10',
             'cupos' => 'required|integer|min:0',
             'gestion_apertura' => [
                 'required',

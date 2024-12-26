@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('divisions', function (Blueprint $table) {
             $table->id('codigo');
             $table->text('division');
+
             $table->unsignedBigInteger('codigo_departamento');
 
             $table->foreign('codigo_departamento')->references('codigo')->on('departamentos');
+
             $table->timestamps();
         });
     }

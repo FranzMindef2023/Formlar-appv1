@@ -27,7 +27,7 @@ class StoreAperturaRequest extends FormRequest
                 },
 
             ],
-            'cantidad' => 'required|integer|min:1|max:10000',
+            'cantidad' => 'required|integer|min:1',
             'fecha_limite' => 'required|date|after:today',
             'fecha_apertura' => 'required|date|before_or_equal:today',
             'edad_min' => 'required|integer|between:0,40',
