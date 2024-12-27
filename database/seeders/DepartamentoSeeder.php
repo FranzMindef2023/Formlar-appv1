@@ -14,32 +14,12 @@ class DepartamentoSeeder extends Seeder
     {
         $departamentos = [
             [
-                'departamento' => 'La Paz',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'departamento' => 'Santa Cruz',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'departamento' => 'Potosi',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
                 'departamento' => 'Chuquisaca',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'departamento' => 'Pando',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'departamento' => 'Beni',
+                'departamento' => 'La Paz',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -49,12 +29,32 @@ class DepartamentoSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'departamento' => 'Oruro',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'departamento' => 'Potosi',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
                 'departamento' => 'Tarija',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'departamento' => 'Oruro',
+                'departamento' => 'Santa Cruz',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'departamento' => 'Beni',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'departamento' => 'Pando',
                 'created_at' => now(),
                 'updated_at' => now()
             ],

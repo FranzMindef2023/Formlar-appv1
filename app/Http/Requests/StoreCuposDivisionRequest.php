@@ -40,15 +40,7 @@ class StoreCuposDivisionRequest extends FormRequest
                 }
             ],
             'cupos' => 'required|integer|min:0',
-            'gestion_apertura' => [
-                'required',
-                'integer',
-                function ($value, $attribute, $fail) {
-                    if ($value < date('Y')) {
-                        $fail('El campo ' . $attribute . ' debe ser igual o mayor que la gestión actual.');
-                    }
-                }
-            ],
+            'gestion_apertura' => 'required|integer|exists:aperturas,gestion|gte:' . date('Y')
         ];
     }
 
@@ -63,13 +55,16 @@ class StoreCuposDivisionRequest extends FormRequest
             'cupos.min' => 'El campo cupos debe tener minimo un valor de 0',
             'gestion_apertura.required' => 'El campo gestion_apertura es obligatorio',
             'gestion_apertura.integer' => 'El campo gestion_apertura debe ser un entero',
+            'gestion_apertura.exists' => 'El campo gestion_apertura debe ser una gestion valida y existente',
+            'gestion_apertura.gte' => 'El campo gestion_apertura debe ser una gestion valida',
         ];
     }
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'message' => 'Something went wrong with the validation.',
+            'success' => false,
             'error' => $validator->errors(),
+            'message' => 'Something went wrong with the validation.',
         ], 422));
     }
 }

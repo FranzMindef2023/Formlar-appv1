@@ -53,8 +53,9 @@ class UpdateCuposCentrosReclutamientoRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'message' => 'Something went wrong with the validation.',
+            'success' => false,
             'error' => $validator->errors(),
+            'message' => 'Something went wrong with the validation.',
         ], 422));
     }
 }

@@ -30,22 +30,23 @@ class StoreCuposCentrosReclutamientoRequest extends FormRequest
                 'integer',
                 'min:1',
                 'exists:centros_reclutamientos,id',
-                function ($val, $attr, $fail) {
+                function ($attribute, $value, $fail) {
                     try {
-                        if (\App\Models\CuposCentrosReclutamiento::where('id_centros_reclutamiento', $val)
+                        if (\App\Models\CuposCentrosReclutamiento::where('id_centros_reclutamiento', $value)
                             ->where('gestion', $this->input('gestion'))
-                            ->exists()
+                            ->first()
                         ) {
                             $fail('El centro de reclutamiento ya tiene cupos asignados para esta gestion.');
                         }
                     } catch (\Exception $e) {
-                        $fail('Error al validar el campo ' . $attr . ': ' . $e->getMessage());
+                        $fail('Error al validar el campo ' . $attribute . ': ' . $e->getMessage());
                     }
                 }
             ],
+
             'codigo_division' => 'required|integer|between:1,10|exists:divisions,codigo',
             'cupo' => 'required|integer|min:1',
-            'gestion' => 'required|integer|gte:' . date('Y'),
+            'gestion' => 'required|integer|exists:aperturas,gestion|gte:' . date('Y'),
         ];
     }
     public function messages()
@@ -64,13 +65,15 @@ class StoreCuposCentrosReclutamientoRequest extends FormRequest
             'cupo.min' => 'El campo cupo debe ser minimo 1 para poder crearse',
             'gestion.required' => 'El campo gestion es obligatorio',
             'gestion.integer' => 'El campo gestion debe ser un entero',
+            'gestion.exists' => 'El campo gestion debe ser valido y existente',
         ];
     }
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'message' => 'Something went wrong with the validation.',
+            'success' => false,
             'error' => $validator->errors(),
+            'message' => 'Something went wrong with the validation.',
         ], 422));
     }
 }

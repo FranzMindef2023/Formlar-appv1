@@ -55,10 +55,10 @@ class CuposDivisionController extends Controller
             if (!$total) {
                 return $this->errorResponse(null, 'No se ha abierto una apertura para la presente gestion');
             }
-            $actual_quantity = CuposDivision::where('gestion_apertura', date('Y'))->sum('cupos');
+            $actual_quantity = CuposDivision::where('gestion_apertura', $request->gestion_apertura)->sum('cupos');
 
             if ($actual_quantity + $request->cupos > $total->cantidad) {
-                return $this->errorResponse('La cantidad de cupos disponibles para asignar a la apertura de la presente gestion es ' . $total->cantidad - $actual_quantity, 'La cantidad total de cupos no puede exceder el limite definido para la gestion actual.', 422);
+                return $this->errorResponse('La cantidad de cupos disponibles para asignar a la division con la apertura de la gestion ' . $request->gestion_apertura . ' es ' . $total->cantidad - $actual_quantity, 'La cantidad total de cupos no puede exceder el limite definido para la gestion actual.', 422);
             }
 
             $cupos_division = CuposDivision::create($request->all());

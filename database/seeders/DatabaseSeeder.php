@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             CentrosReclutamientoSeeder::class,
             UserSeeder::class,
             AperturaSeeder::class,
+            EstudiantesSeeder::class,
         ]);
     }
 }

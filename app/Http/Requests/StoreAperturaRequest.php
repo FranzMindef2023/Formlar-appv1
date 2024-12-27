@@ -73,8 +73,9 @@ class StoreAperturaRequest extends FormRequest
     protected function failedValidation(Validator $validator): void
     {
         throw new HttpResponseException(response()->json([
-            'message' => 'la validacion fallo',
+            'success' => false,
             'error' => $validator->errors(),
+            'message' => 'la validacion fallo',
         ], 422));
     }
 }

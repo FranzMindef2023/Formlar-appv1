@@ -14,11 +14,14 @@ class DepartamentoController extends Controller
 
         if ($departamentos->isEmpty()) {
             return response()->json([
+                'success' => false,
+                'error' => null,
                 'message' => 'departamentos is empty',
             ]);
         }
 
         return response()->json([
+            'success' => true,
             'data' => $departamentos,
             'message' => 'departamentos listed successfully',
         ]);

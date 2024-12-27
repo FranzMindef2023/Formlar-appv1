@@ -45,4 +45,9 @@ class Fuerzas extends Model implements Auditable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function centros_reclutamiento()
+    {
+        return $this->hasMany(CentrosReclutamiento::class, 'id_fuerza', 'idfuerza');
+    }
 }

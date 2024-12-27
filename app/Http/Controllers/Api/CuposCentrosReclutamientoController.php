@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCuposCentrosReclutamientoRequest;
 use App\Http\Requests\UpdateCuposCentrosReclutamientoRequest;
+use App\Models\Apertura;
 use App\Models\CuposCentrosReclutamiento;
 use App\Models\CuposDivision;
 use Illuminate\Http\Request;
@@ -41,20 +42,24 @@ class CuposCentrosReclutamientoController extends Controller
     public function store(StoreCuposCentrosReclutamientoRequest $request)
     {
         try {
+            // division validation cupos
             $total_cupos_division = CuposDivision::where('codigo_division', $request->codigo_division)
                 ->where('gestion_apertura', $request->gestion)
                 ->first();
 
+
             if (!$total_cupos_division) {
-                return $this->errorResponse(null, 'No existen cupos asignados para la division o no se a abierto una apertura para la gestion');
+                return $this->errorResponse(null, 'No existen cupos asignados para la division de esta gestion');
             }
 
+            ///sum of cupos from centros_reclutamiento
             $total_cupos_centro_reclutamiento_division =
-                CuposCentrosReclutamiento::where('id_centros_reclutamiento', $request->id_centros_reclutamiento)
-                ->where('codigo_division', $request->codigo_division)
+                CuposCentrosReclutamiento::where('codigo_division', $request->codigo_division)
                 ->where('gestion', $request->gestion)
                 ->sum('cupo');
 
+
+            // division cupos vs sum of cupos from centros_reclutamiento | validation
             if ($total_cupos_centro_reclutamiento_division + $request->cupo > $total_cupos_division->cupos) {
                 return $this->errorResponse(null, 'La cantidad de cupos excede a la cantidad de cupos asignada para esta division a la cual pertenece este centro de reclutamiento');
             }

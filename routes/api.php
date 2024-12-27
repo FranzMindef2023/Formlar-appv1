@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\CuposDivisionController;
 use App\Http\Controllers\Api\DepartamentoController;
 use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\FuerzasController;
+use App\Http\Controllers\Api\CuposUnidadesEducativaController;
+use App\Http\Controllers\Api\VistaPorcentajeController;
 
 Route::group([
     'middleware' => 'api',
@@ -25,16 +27,26 @@ Route::group([
 });
 Route::post('assign-role', [UserController::class, 'asignarRoles']);
 
+
 Route::apiResource('aperturas', AperturaController::class);
+Route::get('aperturas/{gestion}', [AperturaController::class, 'show_by_gestion']);
+
 Route::apiResource('cupos-division', CuposDivisionController::class);
-Route::apiResource('centros-reclutamiento', CentrosReclutamientoController::class);
 Route::apiResource('cupos-centros-reclutamiento', CuposCentrosReclutamientoController::class);
+Route::apiResource('cupos-ue', CuposUnidadesEducativaController::class);
+
+// calls to view_porcentajes in the db
+Route::get('porcentajes/{ue_id}', [VistaPorcentajeController::class, 'show_by_ue']);
+Route::get('porcentajes/{ue_id}/{gestion}', [VistaPorcentajeController::class, 'show_by_ue_gestion']);
+
+
 
 Route::middleware('auth:api')->group(function () {
-
+    // jerarquized
     Route::apiResource('fuerzas', FuerzasController::class);
     Route::apiResource('departamentos', DepartamentoController::class);
     Route::apiResource('divisiones', DivisionController::class);
+    Route::apiResource('centros-reclutamiento', CentrosReclutamientoController::class);
 
     Route::get('showroluser/{id}',  [UserController::class, 'showroluser']);
 

@@ -52,7 +52,19 @@ class CentrosReclutamientoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $centro_reclutamiento = CentrosReclutamiento
+                ::with([
+                    'cupos_centros_reclutamientos_gestiones' => function ($query) {
+                        $query->orderBy('created_at', 'desc');
+                    },
+                    'fuerza'
+                ])->findOrFail($id);
+
+            return $this->successResponse($centro_reclutamiento, "Centro de reclutamiento retrieved succesfully", 200);
+        } catch (\Exception $th) {
+            return $this->errorResponse($th->getMessage());
+        }
     }
 
     /**

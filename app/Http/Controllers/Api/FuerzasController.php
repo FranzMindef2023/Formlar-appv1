@@ -29,9 +29,9 @@ class FuerzasController extends Controller
             }
 
             return response()->json([
-                'status' => true,
+                'success' => true,
+                'data' => $fuerzas,
                 'message' => 'Fuerzas encontradas',
-                'data' => $fuerzas
             ], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Manejar el caso cuando no se encuentran fuerzas (404)
@@ -70,7 +70,23 @@ class FuerzasController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $fuerza = Fuerzas::with('centros_reclutamiento')
+                ->findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'data' => $fuerza,
+                'message' => 'Fuerza found.',
+
+            ], 200);
+        } catch (\Exception $th) {
+            return response()->json([
+                'success' => false,
+                'error' => $th->getMessage(),
+                'message' => $th->getMessage(),
+            ]);
+        }
     }
 
     /**
