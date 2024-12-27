@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCuposUnidadesEducativasRequest;
 use App\Models\CuposCentrosReclutamiento;
 use App\Models\CuposUnidadesEducativa;
+use App\Models\VistaPorcentaje;
 use Illuminate\Http\Request;
 
 class CuposUnidadesEducativaController extends Controller
@@ -27,7 +28,7 @@ class CuposUnidadesEducativaController extends Controller
     {
         return response()->json([
             'success' => false,
-            'data' => $error,
+            'error' => $error,
             'message' => $message,
         ], $status);
     }
@@ -49,11 +50,6 @@ class CuposUnidadesEducativaController extends Controller
     public function store(StoreCuposUnidadesEducativasRequest $request)
     {
         try {
-            if (!\App\Models\Apertura::where('gestion', $request->gestion)->exists()) {
-                return $this->errorResponse(null, 'No se aperturo la gestion ' . $request->gestion);
-            }
-
-
             $total_cupos_centro_reclutamiento = CuposCentrosReclutamiento
                 ::where('id_centros_reclutamiento', $request->centros_reclutamiento_id)
                 ->where('gestion', $request->gestion)
@@ -68,9 +64,29 @@ class CuposUnidadesEducativaController extends Controller
                 ->where('gestion', $request->gestion)
                 ->sum('cupos');
 
-            if ($total_cupos_centro_reclutamiento->cupos + $request->cupos > $sum_cupos_ue_cr) {
-                return $this->errorResponse(null, 'El cupo ' . $total_cupos_centro_reclutamiento . ' a asignar excede el limite de cupos para el centro de reclutamiento ');
+            if ($sum_cupos_ue_cr + $request->cupos > $total_cupos_centro_reclutamiento->cupo) {
+                return $this->errorResponse('La cantidad de cupos disponibles para asignar a la unidad educativa con el centro de reclutamiento ' . $request->centros_reclutamiento_id . ' y con la apertura de la gestion ' . $request->gestion . ' es ' . $total_cupos_centro_reclutamiento->cupo - $sum_cupos_ue_cr, 'La cantidad total de cupos no puede exceder el limite definido para la gestion actual.', 422);
             }
+
+
+            $porcentaje_ue = VistaPorcentaje::where('codigo_unidad_educativa', $request->unidades_educativa_codigo)
+                ->where('gestion', $request->gestion)
+                ->first();
+
+            if ($request->cupos > $porcentaje_ue->total_estudiantes) {
+                return $this->errorResponse(null, 'La cantidad de cupos a asignar excede a la cantidad total de estudiantes');
+            }
+
+            $aceptado_hombres = round(($request->cupos * $request->porcentaje_hombres) / 100);
+            if ($aceptado_hombres > $porcentaje_ue->total_hombres) {
+                return $this->errorResponse(null, 'La cantidad de cupos a asignar o el porcentaje asignado no cumple con la cantidad de hombres que tiene la unidad educativa');
+            }
+            $aceptado_mujeres = round(($request->cupos * $request->porcentaje_mujeres) / 100);
+            if ($aceptado_mujeres > $porcentaje_ue->total_mujeres) {
+                return $this->errorResponse(null, 'La cantidad de cupos a asignar o el porcentaje asignado no cumple con la cantidad de mujeres que tiene la unidad educativa');
+            }
+
+
             $cupos_unidad_educativa = CuposUnidadesEducativa::create($request->validated());
             return $this->successResponse($cupos_unidad_educativa, 'Cupos de la unidad educativa created succesfully.');
         } catch (\Exception $th) {

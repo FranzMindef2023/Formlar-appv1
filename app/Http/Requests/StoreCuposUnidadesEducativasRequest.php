@@ -32,7 +32,7 @@ class StoreCuposUnidadesEducativasRequest extends FormRequest
             'porcentaje_mujeres' => 'required|numeric|min:0|max:100',
             'aceptado_hombres' => 'nullable|integer|min:0',
             'aceptado_mujeres' => 'nullable|integer|min:0',
-            'gestion' => 'required|integer|gte:' . date('Y'),
+            'gestion' => 'required|integer|exists:aperturas,gestion|gte:' . date('Y'),
         ];
     }
 
@@ -61,6 +61,7 @@ class StoreCuposUnidadesEducativasRequest extends FormRequest
             'gestion.required' => 'El campo gestion es obligatorio.',
             'gestion.integer' => 'El campo gestion debe ser un número entero.',
             'gestion.min' => 'La gestion debe ser igual o mayor que el año actual.',
+            'gestion.exists' => 'La gestion debe ser valida o existente',
         ];
     }
     protected function failedValidation(Validator $validator): void
