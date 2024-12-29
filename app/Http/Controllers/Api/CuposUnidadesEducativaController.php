@@ -85,10 +85,13 @@ class CuposUnidadesEducativaController extends Controller
             if ($aceptado_mujeres > $porcentaje_ue->total_mujeres) {
                 return $this->errorResponse(null, 'La cantidad de cupos a asignar o el porcentaje asignado no cumple con la cantidad de mujeres que tiene la unidad educativa');
             }
+            $data = array_merge($request->validated(), [
+                'aceptado_hombres' => $aceptado_hombres,
+                'aceptado_mujeres' => $aceptado_mujeres,
+            ]);
 
-
-            $cupos_unidad_educativa = CuposUnidadesEducativa::create($request->validated());
-            return $this->successResponse($cupos_unidad_educativa, 'Cupos de la unidad educativa created succesfully.');
+            $cupos_unidad_educativa = CuposUnidadesEducativa::create($data);
+            return $this->successResponse($data, 'Cupos de la unidad educativa created succesfully.');
         } catch (\Exception $th) {
             return $this->errorResponse($th->getMessage());
         }
