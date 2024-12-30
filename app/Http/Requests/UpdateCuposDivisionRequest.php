@@ -28,15 +28,7 @@ class UpdateCuposDivisionRequest extends FormRequest
         return [
             'codigo_division' => 'required|integer|between:1,10',
             'cupos' => 'required|integer|min:0',
-            'gestion_apertura' => [
-                'required',
-                'integer',
-                function ($value, $attribute, $fail) {
-                    if ($value < date('Y')) {
-                        $fail('El campo ' . $attribute . ' debe ser igual o mayor que la gestión actual.');
-                    }
-                }
-            ],
+            'gestion_apertura' => 'required|integer|gte:' . date('Y'),
         ];
     }
 

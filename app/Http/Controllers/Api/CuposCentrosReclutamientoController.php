@@ -72,6 +72,17 @@ class CuposCentrosReclutamientoController extends Controller
             return $this->errorResponse($th->getMessage());
         }
     }
+    public function show(string $id)
+    {
+        try {
+            $cupos_centros_reclutamiento = CuposCentrosReclutamiento::findOrFail($id);
+
+
+            return $this->successResponse($cupos_centros_reclutamiento, 'Cupos de la unidad educativa deleted successfully.');
+        } catch (\Exception $th) {
+            return $this->errorResponse($th->getMessage());
+        }
+    }
     public function udpate(UpdateCuposCentrosReclutamientoRequest $request, string $id)
     {
         try {
@@ -91,9 +102,28 @@ class CuposCentrosReclutamientoController extends Controller
                 return $this->errorResponse(null, 'La cantidad de cupos excede a la cantidad de cupos asignada para esta division de este centro de reclutamiento');
             }
 
+
+
+            $cupos_centros_reclutamiento = CuposCentrosReclutamiento
+                ::firstWhere('id', $id)
+                ->where('gestion', $request->gestion)
+                ->update($request->validated());
+
+
+            return $this->successResponse($cupos_centros_reclutamiento, 'Actualizado correctamente!');
+
+        } catch (\Exception $th) {
+            return $this->errorResponse($th->getMessage());
+        }
+    }
+    public function destroy(string $id)
+    {
+        try {
             $cupos_centros_reclutamiento = CuposCentrosReclutamiento::findOrFail($id);
 
-            $cupos_centros_reclutamiento->update($request->validated());
+            $cupos_centros_reclutamiento->delete();
+
+            return $this->successResponse($cupos_centros_reclutamiento, 'Cupos de la unidad educativa deleted successfully.');
         } catch (\Exception $th) {
             return $this->errorResponse($th->getMessage());
         }

@@ -13,7 +13,8 @@ class DivisionController extends Controller
      */
     public function index()
     {
-        $divisiones = Division::all();
+        $divisiones = Division::with('cupos_divisiones')
+            ->get();
 
         if ($divisiones->isEmpty()) {
             return response()->json([
@@ -40,7 +41,23 @@ class DivisionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $division = Division::with('cupos_divisiones')
+                ->firstWhere('codigo', $id);
+
+
+            return response()->json([
+                "success" => true,
+                "data" => $division,
+                "message" => "divisiones retrieved successfully",
+            ]);
+        } catch (\Exception $th) {
+            return response()->json([
+                "success" => true,
+                "error" => $th->getMessage(),
+                "message" => "Something went wrong!",
+            ]);
+        }
     }
 
     /**

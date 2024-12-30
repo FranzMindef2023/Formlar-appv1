@@ -48,8 +48,6 @@ class CuposDivisionController extends Controller
      */
     public function store(StoreCuposDivisionRequest $request)
     {
-
-
         try {
             $total = Apertura::firstWhere('gestion', date('Y'));
             if (!$total) {
@@ -74,7 +72,14 @@ class CuposDivisionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $cupos_division = CuposDivision::findOrFail($id);
+
+
+            return $this->successResponse($cupos_division, 'Cupos de la unidad educativa retrieved successfully.');
+        } catch (\Exception $th) {
+            return $this->errorResponse($th->getMessage());
+        }
     }
 
     /**
@@ -83,11 +88,14 @@ class CuposDivisionController extends Controller
     public function update(UpdateCuposDivisionRequest $request, string $id)
     {
         try {
-            $cupos_division = CuposDivision::findOrFail($id);
+            $cupos_division = CuposDivision
+                ::where('gestion_apertura', $request->gestion)
+                ->findOrFail($id)
+                ->first();
 
             $total = Apertura::firstWhere('gestion', $request->gestion_apertura);
             if (!$total) {
-                return $this->errorResponse(null, 'No se ha abierto una apertura para la presente gestion');
+                return $this->errorResponse(null, 'No se puede actualizar si no se ha abierto una apertura para la gestion');
             }
 
             $actual_quantity = CuposDivision::where('gestion_apertura', $request->gestion_apertura)->sum('cupos');
@@ -109,6 +117,14 @@ class CuposDivisionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $cupos_division = CuposDivision::findOrFail($id);
+
+            $cupos_division->delete();
+
+            return $this->successResponse($cupos_division, 'Cupos de la unidad educativa deleted successfully.');
+        } catch (\Exception $th) {
+            return $this->errorResponse($th->getMessage());
+        }
     }
 }

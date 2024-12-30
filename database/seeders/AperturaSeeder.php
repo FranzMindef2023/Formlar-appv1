@@ -18,7 +18,7 @@ class AperturaSeeder extends Seeder
             "cantidad" =>  500,
             "fecha_limite" =>  "2024-12-31",
             "fecha_apertura" =>  "2024-01-01",
-            "edad_min" =>  17,
+            "edad_min" =>  16,
             "edad_max" =>  19,
             "cite_junta" =>  "Ejemplo de texto para cite junta.",
             "firma_mae" =>  "Ejemplo de texto para firma MAE.",

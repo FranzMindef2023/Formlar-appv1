@@ -15,6 +15,7 @@ class CentrosReclutamiento extends Model
     {
         return $this->hasMany(CuposCentrosReclutamiento::class, 'id_centros_reclutamiento', 'id');
     }
+
     public function fuerza()
     {
         return $this->belongsTo(Fuerzas::class, 'id_fuerza', 'idfuerza');
