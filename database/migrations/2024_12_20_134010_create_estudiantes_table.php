@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text("nombres");
             $table->unsignedBigInteger("ci")->nullable();
             $table->text("complemento")->nullable();
-            $table->text("expedido");
+            $table->text("expedido")->nullable();
 
             $table->date("fecha_nacimiento");
 

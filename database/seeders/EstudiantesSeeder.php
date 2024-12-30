@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Estudiante;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
 
 class EstudiantesSeeder extends Seeder
 {
@@ -37,11 +39,24 @@ class EstudiantesSeeder extends Seeder
                     "zona" => $record[15],
                     "direccion" => $record[16],
                     "nota_promedio" => $record[17] !== "" ? $record[17] : 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
                 Estudiante::create($estudiante);
             }
             $heading = false;
         }
         fclose($input_file);       //
+
+        /*         DB::table('unidades_educativas')->insert([ */
+        /*             'codigo' => 80480002, */
+        /*             'unidad_educativa' => 'JORGE REVILLA ALDANA B', */
+        /*             'distrito' => '1001-SUCRE', */
+        /*             'zona' => 'ALTO DELICIAS', */
+        /*             'direccion' => 'CALLE JOAQUIN GANTIER VALDA S/N', */
+        /*             'codigo_departamento' => 1, */
+        /*             'created_at' => now(), */
+        /*             'updated_at' => now(), */
+        /*         ]); */
     }
 }

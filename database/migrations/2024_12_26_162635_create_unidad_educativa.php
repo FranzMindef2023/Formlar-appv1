@@ -50,7 +50,7 @@ class CreateUnidadEducativa extends Migration
 
         // Creamos el trigger
         DB::unprepared('
-            CREATE OR REPLACE TRIGGER after_insert_estudiante
+            CREATE OR REPLACE TRIGGER after_insert_estudiante_ue
                 AFTER INSERT ON estudiantes
                 FOR EACH ROW
                 EXECUTE FUNCTION public.insert_unidad_educativa();
@@ -65,7 +65,7 @@ class CreateUnidadEducativa extends Migration
     public function down()
     {
         // Eliminamos el trigger
-        DB::unprepared('DROP TRIGGER IF EXISTS after_insert_estudiante ON estudiantes');
+        DB::unprepared('DROP TRIGGER IF EXISTS after_insert_estudiante_ue ON estudiantes');
 
         // Eliminamos la función
         DB::unprepared('DROP FUNCTION IF EXISTS insert_unidad_educativa');
