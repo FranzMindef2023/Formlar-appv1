@@ -13,19 +13,19 @@ class DivisionSeeder extends Seeder
      */
     public function run(): void
     {
-        $divisions = [
-            ['division' => 'Division 1', 'codigo_departamento' => 1],
-            ['division' => 'Division 2', 'codigo_departamento' => 2],
-            ['division' => 'Division 3', 'codigo_departamento' => 3],
-            ['division' => 'Division 4', 'codigo_departamento' => 4],
-            ['division' => 'Division 5', 'codigo_departamento' => 5],
-            ['division' => 'Division 6', 'codigo_departamento' => 6],
-            ['division' => 'Division 7', 'codigo_departamento' => 9],
-            ['division' => 'Division 8', 'codigo_departamento' => 8],
-            ['division' => 'Division 9', 'codigo_departamento' => 7],
-            ['division' => 'Division 10', 'codigo_departamento' => 7],
-        ];
 
+        $divisions = [
+            ['division' => 'Region Militar 1', 'codigo_departamento' => 2], // la paz
+            ['division' => 'Region Militar 2', 'codigo_departamento' => 4], // oruro
+            ['division' => 'Region Militar 3', 'codigo_departamento' => 6], // tarija
+            ['division' => 'Region Militar 4', 'codigo_departamento' => 1], // sucre
+            ['division' => 'Region Militar 5', 'codigo_departamento' => 1], // solo para rellenar
+            ['division' => 'Region Militar 6', 'codigo_departamento' => 8], // beni
+            ['division' => 'Region Militar 7', 'codigo_departamento' => 3], // cochabamba
+            ['division' => 'Region Militar 8', 'codigo_departamento' => 7], // santa cruz
+            ['division' => 'Region Militar 9', 'codigo_departamento' => 9], // pando
+            ['division' => 'Region Militar 10', 'codigo_departamento' => 5], // potosi
+        ];
         foreach ($divisions as $division) {
             DB::table('divisions')->insert([
                 'division' => $division['division'],

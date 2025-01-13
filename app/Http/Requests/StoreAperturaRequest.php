@@ -22,7 +22,7 @@ class StoreAperturaRequest extends FormRequest
                 'unique:aperturas,gestion',
                 function ($attribute, $value, $fail) {
                     if ($value < date('Y')) {
-                        $fail('El campo ' . $attribute . 'debe ser igual o mayor que la gestion actual');
+                        $fail('El campo ' . $attribute . ' debe ser igual o mayor que la gestion actual');
                     }
                 },
 
@@ -32,8 +32,8 @@ class StoreAperturaRequest extends FormRequest
             'fecha_apertura' => 'required|date|before_or_equal:today',
             'edad_min' => 'required|integer|between:0,40',
             'edad_max' => 'required|integer|between:0,40|gte:edad_min',
-            'cite_junta' => 'required|string|max:65535',
-            'firma_mae' => 'required|string|max:65535',
+            'cite_junta' => 'nullable|string|max:65535',
+            'firma_mae' => 'nullable|string|max:65535',
         ];
     }
 
@@ -47,9 +47,9 @@ class StoreAperturaRequest extends FormRequest
             'cantidad.integer' => 'El campo cantidad debe ser un numero entero.',
             'cantidad.min' => 'La cantidad debe ser al menos 1.',
             'cantidad.max' => 'La cantidad no puede ser mayor a 10000.',
-            'fecha_limite.required' => 'El campo fecha limite es obligatorio.',
+            'fecha_limite.required' => 'El campo fecha limite de edad es obligatorio.',
             'fecha_limite.date' => 'El campo fecha limite debe ser una fecha valida.',
-            'fecha_limite.after' => 'La fecha limite debe ser posterior a hoy.',
+            'fecha_limite.after' => 'La fecha limite de edad debe ser posterior a hoy.',
             'fecha_apertura.required' => 'El campo fecha de apertura es obligatorio.',
             'fecha_apertura.date' => 'El campo fecha de apertura debe ser una fecha valida.',
             'fecha_apertura.before_or_equal' => 'La fecha de apertura debe ser igual o anterior a hoy.',
@@ -62,10 +62,8 @@ class StoreAperturaRequest extends FormRequest
             'edad_max.min' => 'La edad maxima debe ser al menos 0.',
             'edad_max.max' => 'La edad maxima no puede ser mayor a 150.',
             'edad_max.gte' => 'La edad maxima debe ser mayor o igual a la edad minima.',
-            'cite_junta.required' => 'El campo cite junta es obligatorio.',
             'cite_junta.string' => 'El campo cite junta debe ser un texto.',
             'cite_junta.max' => 'El campo cite junta no puede exceder los 65535 caracteres.',
-            'firma_mae.required' => 'El campo firma MAE es obligatorio.',
             'firma_mae.string' => 'El campo firma MAE debe ser un texto.',
             'firma_mae.max' => 'El campo firma MAE no puede exceder los 65535 caracteres.',
         ];

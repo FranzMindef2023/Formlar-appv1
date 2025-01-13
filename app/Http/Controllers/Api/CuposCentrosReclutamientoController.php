@@ -111,7 +111,6 @@ class CuposCentrosReclutamientoController extends Controller
 
 
             return $this->successResponse($cupos_centros_reclutamiento, 'Actualizado correctamente!');
-
         } catch (\Exception $th) {
             return $this->errorResponse($th->getMessage());
         }

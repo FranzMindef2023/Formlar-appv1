@@ -62,10 +62,12 @@ class AperturaController extends Controller
             return $this->errorResponse($e, 'Apertura not found', 404);
         }
     }
-    public function show_by_gestion(string $gestion)
+    public function show_actual_gestion()
     {
         try {
-            $apertura = Apertura::firstWhere('gestion', $gestion);
+
+            $apertura = Apertura::firstWhere('gestion', date('Y'));
+
 
             return $this->successResponse($apertura, 'Apertura found.');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -73,6 +75,20 @@ class AperturaController extends Controller
         }
     }
 
+    public function show_by_gestion(string $year)
+    {
+        try {
+            $apertura = Apertura::firstWhere('gestion', $year);
+
+            if (!$apertura) {
+                return $this->errorResponse(null, 'Apertura not found', 404);
+            }
+
+            return $this->successResponse($apertura, 'Apertura found.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->errorResponse($e, 'Apertura not found', 404);
+        }
+    }
 
 
     public function update(string $id, Request $request)

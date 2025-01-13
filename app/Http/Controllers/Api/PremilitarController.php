@@ -69,21 +69,23 @@ class PremilitarController extends Controller
         }
 
         if (!$premilitar->habilitado_edad) {
-            return $this->successResponse($premilitar, 'El premilitar no fue invitado por que no cumple con la edad requerida');
+            return $this->successResponse($premilitar, 'no cumple con la edad requerida');
         }
 
         if (!$premilitar->invitado) {
-            return $this->successResponse($premilitar, 'El premilitar no fue invitado');
+            return $this->successResponse($premilitar, 'no cumple con las mejores notas o se agotaron los cupos en su unidad educativa');
         }
 
-        $centro_reclutamiento = CuposUnidadesEducativa
-            ::where('unidades_educativa_codigo', $premilitar->codigo_unidad_educativa)
-            ->where('gestion', $premilitar->gestion)
-            ->first();
+        // no se va dar esta situacion quiero pensar
+        //
+        /* $centro_reclutamiento = CuposUnidadesEducativa */
+        /*     ::where('unidades_educativa_codigo', $premilitar->codigo_unidad_educativa) */
+        /*     ->where('gestion', $premilitar->gestion) */
+        /*     ->first(); */
 
-        if ($centro_reclutamiento->cupos <= 0) {
-            return $this->errorResponse(null, 'No se encuentran cupos disponibles para la unidad educativa');
-        }
+        /* if ($centro_reclutamiento->cupos <= 0) { */
+        /*     return $this->errorResponse(null, 'No se encuentran cupos disponibles para la unidad educativa'); */
+        /* } */
 
 
         return $this->successResponse($premilitar, 'El premilitar fue invitado');

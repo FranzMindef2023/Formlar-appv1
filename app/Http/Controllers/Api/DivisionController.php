@@ -75,4 +75,53 @@ class DivisionController extends Controller
     {
         //
     }
+
+
+    public function show_actual_gestion()
+    {
+        try {
+            $divisiones = Division::with([
+                'cupos_divisiones' => function ($query) {
+                    $query->where('gestion_apertura', date('Y'));
+                }
+            ])
+                ->get();
+
+            return response()->json([
+                "success" => true,
+                "data" => $divisiones,
+                "message" => "divisiones retrieved successfully",
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                "success" => true,
+                "error" => $e->getMessage(),
+                "message" => "Something went wrong!",
+            ]);
+        }
+    }
+
+    public function show_by_gestion(string $year)
+    {
+        try {
+            $divisiones = Division::with([
+                'cupos_divisiones' => function ($query) use ($year) {
+                    $query->where('gestion_apertura', $year);
+                }
+            ])
+                ->get();
+
+            return response()->json([
+                "success" => true,
+                "data" => $divisiones,
+                "message" => "Divisiones retrieved successfully",
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                "success" => false,
+                "error" => $e->getMessage(),
+                "message" => "Something went wrong!",
+            ]);
+        }
+    }
 }

@@ -82,4 +82,56 @@ class CentrosReclutamientoController extends Controller
     {
         //
     }
+
+    public function show_actual_gestion()
+    {
+        try {
+            $centros_reclutamiento = CentrosReclutamiento::with([
+                'cupos_centros_reclutamientos_gestiones' => function ($query) {
+                    $query->where('gestion', date('Y'));
+                }
+            ])
+                ->get();
+
+            return response()->json([
+                "success" => true,
+                "data" => $centros_reclutamiento,
+                "message" => "divisiones retrieved successfully",
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                "success" => true,
+                "error" => $e->getMessage(),
+                "message" => "Something went wrong!",
+            ]);
+        }
+    }
+
+    public function show_by_gestion(string $year)
+    {
+        try {
+            $centros_reclutamiento = CentrosReclutamiento::with([
+                'cupos_centros_reclutamientos_gestiones' => function ($query) use ($year) {
+                    $query->where('gestion', $year);
+                }
+            ])->get();
+
+            $centros_reclutamiento = $centros_reclutamiento->map(function ($centro) {
+                $centro->cupos = $centro->cupos_centros_reclutamientos_gestiones->sum('cupo');
+                return $centro;
+            });
+
+            return response()->json([
+                "success" => true,
+                "data" => $centros_reclutamiento,
+                "message" => "Centros de reclutamiento retrieved successfully",
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                "success" => false,
+                "error" => $e->getMessage(),
+                "message" => "Something went wrong!",
+            ]);
+        }
+    }
 }
