@@ -15,7 +15,7 @@ class AperturaSeeder extends Seeder
     {
         $apertura = [
             "gestion" =>  2025,
-            "cantidad" =>  500,
+            "cantidad" =>  91000,
             "fecha_limite" =>  "2025-08-31",
             "fecha_apertura" =>  date("Y-m-d"),
             "edad_min" =>  17,

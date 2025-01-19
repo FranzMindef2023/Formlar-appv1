@@ -14,14 +14,19 @@ return new class extends Migration
             CREATE OR REPLACE VIEW vista_porcentajes AS
             SELECT
                 ue.codigo AS codigo_unidad_educativa,
-                COUNT(e.correlativo) AS total_estudiantes,
-                COUNT(CASE WHEN e.sexo = \'MASCULINO\' THEN 1 END) AS total_hombres,
-                COUNT(CASE WHEN e.sexo = \'FEMENINO\' THEN 1 END) AS total_mujeres,
+                (SELECT COUNT(p2.correlativo)
+                 FROM premilitars p2
+                 WHERE p2.codigo_unidad_educativa = ue.codigo) AS total_estudiantes,
+                COUNT(p.correlativo) AS total_estudiantes_habilitados,
+                COUNT(CASE WHEN p.sexo = \'MASCULINO\' THEN 1 END) AS total_hombres,
+                COUNT(CASE WHEN p.sexo = \'FEMENINO\' THEN 1 END) AS total_mujeres,
                 EXTRACT(YEAR FROM CURRENT_DATE) AS gestion
             FROM
-                estudiantes e
+                premilitars p
             JOIN
-                unidades_educativas ue ON e.codigo = ue.codigo
+                unidades_educativas ue ON p.codigo_unidad_educativa = ue.codigo
+            WHERE
+                p.habilitado_edad
             GROUP BY
                 ue.codigo;
         ');

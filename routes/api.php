@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\CuposUnidadesEducativaController;
 use App\Http\Controllers\Api\PremilitarController;
 use App\Http\Controllers\Api\UnidadesEducativaController;
 use App\Http\Controllers\Api\VistaPorcentajeController;
+use App\Models\Division;
 
 Route::group([
     'middleware' => 'api',
@@ -32,38 +33,41 @@ Route::post('assign-role', [UserController::class, 'asignarRoles']);
 Route::get('premilitar/estoy-invitado/{ci}', [PremilitarController::class, 'am_i_invited']);
 
 
-Route::prefix('gestion')->group(function () {
-    Route::get('aperturas/', [AperturaController::class, 'show_actual_gestion']);
-    Route::get('aperturas/{year}', [AperturaController::class, 'show_by_gestion']);
-    Route::get('division/', [DivisionController::class, 'show_actual_gestion']);
-    Route::get('division/{year}', [DivisionController::class, 'show_by_gestion']);
-
-    Route::get('centros-reclutamiento', [CentrosReclutamientoController::class, 'show_actual_gestion']);
-    Route::get('centros-reclutamiento/{year}', [CentrosReclutamientoController::class, 'show_by_gestion']);
-    Route::get('unidades-educativas', [UnidadesEducativaController::class, 'show_actual_gestion']);
-    Route::get('unidades-educativas/{year}', [UnidadesEducativaController::class, 'show_by_gestion']);
-});
-
-Route::prefix('cupos')->group(function () {
-    Route::apiResource('aperturas', AperturaController::class);
-    Route::apiResource('division', CuposDivisionController::class);
-    Route::apiResource('centros-reclutamiento', CuposCentrosReclutamientoController::class);
-    Route::apiResource('unidades-educativas', CuposUnidadesEducativaController::class);
-});
 
 
-Route::apiResource('centros-reclutamiento', CentrosReclutamientoController::class);
+Route::get('porcentajes/{ue_id}/{gestion}', [VistaPorcentajeController::class, 'show_by_ue_gestion']);
+Route::get('porcentajes/{ue_id}', [VistaPorcentajeController::class, 'show_by_ue']);
+
+
 
 
 
 
 
 Route::middleware('auth:api')->group(function () {
-    // jerarquized
     Route::apiResource('fuerzas', FuerzasController::class);
     Route::apiResource('departamentos', DepartamentoController::class);
     Route::apiResource('divisiones', DivisionController::class);
     Route::apiResource('unidades-educativas', UnidadesEducativaController::class);
+    Route::apiResource('centros-reclutamiento', CentrosReclutamientoController::class);
+
+
+    Route::prefix('gestion')->group(function () {
+        Route::get('aperturas/{year}', [AperturaController::class, 'show_by_gestion']);
+        Route::get('division/{year}', [DivisionController::class, 'show_by_gestion']);
+        Route::get('centros-reclutamiento/{year}', [CentrosReclutamientoController::class, 'show_by_gestion']);
+        Route::get('unidades-educativas/{year}', [UnidadesEducativaController::class, 'show_by_gestion']);
+    });
+
+
+    Route::prefix('cupos')->group(function () {
+        Route::apiResource('aperturas', AperturaController::class);
+        Route::apiResource('division', CuposDivisionController::class);
+        Route::apiResource('centros-reclutamiento', CuposCentrosReclutamientoController::class);
+        Route::apiResource('unidades-educativas', CuposUnidadesEducativaController::class);
+    });
+
+
 
 
     Route::get('showroluser/{id}',  [UserController::class, 'showroluser']);
@@ -81,6 +85,4 @@ Route::middleware('auth:api')->group(function () {
 
 
     // calls to view_porcentajes in the db, how many students male and female by ue
-    Route::get('porcentajes/{ue_id}/{gestion}', [VistaPorcentajeController::class, 'show_by_ue_gestion']);
-    Route::get('porcentajes/{ue_id}', [VistaPorcentajeController::class, 'show_by_ue']);
 });

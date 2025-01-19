@@ -89,6 +89,13 @@ class CuposUnidadesEducativaController extends Controller
             if ($aceptado_mujeres > $porcentaje_ue->total_mujeres) {
                 return $this->errorResponse(null, 'La cantidad de cupos a asignar o el porcentaje asignado no cumple con la cantidad de mujeres que tiene la unidad educativa');
             }
+
+            if ($aceptado_hombres + $aceptado_mujeres != $request->cupos) {
+                return $this->errorResponse(null, 'La cantidad de personas habilitadas por edad es menor a los cupos a asignar');
+            }
+
+            //vdc04045
+
             $data = array_merge($request->validated(), [
                 'aceptado_hombres' => $aceptado_hombres,
                 'aceptado_mujeres' => $aceptado_mujeres,

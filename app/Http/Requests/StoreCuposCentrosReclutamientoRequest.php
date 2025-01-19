@@ -45,7 +45,7 @@ class StoreCuposCentrosReclutamientoRequest extends FormRequest
             ],
 
             'codigo_division' => 'required|integer|between:1,10|exists:divisions,codigo',
-            'cupo' => 'required|integer|min:1',
+            'cupo' => 'required|integer|min:1', // !EMERGENCY cambiar a min:1
             'gestion' => 'required|integer|exists:aperturas,gestion|gte:' . date('Y'),
         ];
     }
