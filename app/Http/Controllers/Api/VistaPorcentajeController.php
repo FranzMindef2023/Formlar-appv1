@@ -80,34 +80,35 @@ class VistaPorcentajeController extends Controller
     public function oficio()
     {
         try {
-            DB::raw("
-                WITH ordenados AS (
-                    SELECT
-                        p.id, -- Suponiendo que `id` es la clave primaria de `premilitars`
-                        LPAD(ROW_NUMBER() OVER (ORDER BY cr.id, p.nota_promedio DESC)::TEXT,
-                             LENGTH((SELECT COUNT(*) FROM premilitars WHERE invitado)::TEXT) + 1,
-                             '0') AS nuevo_oficio
-                    FROM premilitars p
-                    JOIN unidades_educativas ue ON p.codigo_unidad_educativa = ue.codigo
-                    JOIN cupos_unidades_educativas cue ON ue.codigo = cue.unidades_educativa_codigo
-                    JOIN centros_reclutamientos cr ON cue.centros_reclutamiento_id = cr.id
-                    WHERE p.invitado
-                )
-                UPDATE premilitars
-                SET oficio = o.nuevo_oficio
-                FROM ordenados o
-                WHERE premilitars.id = o.id;
-            ");
-
+            $premilitares = DB::statement("
+            WITH ordenados AS (
+                SELECT
+                    p.id, -- Suponiendo que `id` es la clave primaria de `premilitars`
+                    LPAD(ROW_NUMBER() OVER (ORDER BY cr.id, p.nota_promedio DESC)::TEXT,
+                         LENGTH((SELECT COUNT(*) FROM premilitars WHERE invitado)::TEXT) + 1,
+                         '0') AS nuevo_oficio
+                FROM premilitars p
+                JOIN unidades_educativas ue ON p.codigo_unidad_educativa = ue.codigo
+                JOIN cupos_unidades_educativas cue ON ue.codigo = cue.unidades_educativa_codigo
+                JOIN centros_reclutamientos cr ON cue.centros_reclutamiento_id = cr.id
+                WHERE p.invitado
+            )
+            UPDATE premilitars
+            SET oficio = o.nuevo_oficio
+            FROM ordenados o
+            WHERE premilitars.id = o.id;
+        ");
 
             return response()->json([
                 'success' => true,
-                'message' => 'Porcentaje retrieved successfully',
+                'data' => $premilitares,
+                'message' => 'Oficio updated successfully',
             ], 200);
         } catch (\Exception $th) {
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong!',
+                'error' => $th->getMessage(), // Para depuración, opcional.
             ], 500);
         }
     }

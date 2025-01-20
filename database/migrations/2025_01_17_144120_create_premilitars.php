@@ -74,12 +74,14 @@ return new class extends Migration
                 CURRENT_DATE, -- Fecha presentación
                 CURRENT_TIME, -- Hora presentación
 
-COALESCE(
+                COALESCE(
                     (
-                        EXTRACT(YEAR FROM AGE(CURRENT_DATE, NEW.fecha_nacimiento))::INT BETWEEN
+                        (COALESCE(EXTRACT(YEAR FROM AGE((SELECT fecha_limite FROM aperturas LIMIT 1), NEW.fecha_nacimiento))::INT, 0) BETWEEN
                         (SELECT edad_min FROM aperturas WHERE gestion = EXTRACT(YEAR FROM CURRENT_DATE)::INT LIMIT 1)
                         AND
-                        (SELECT edad_max FROM aperturas WHERE gestion = EXTRACT(YEAR FROM CURRENT_DATE)::INT LIMIT 1)
+                        (SELECT edad_max FROM aperturas WHERE gestion = EXTRACT(YEAR FROM CURRENT_DATE)::INT LIMIT 1))
+                        AND
+                        NEW.segip = \'Si\'
                     ),
                     false
                 ),

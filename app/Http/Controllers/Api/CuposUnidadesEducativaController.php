@@ -94,7 +94,6 @@ class CuposUnidadesEducativaController extends Controller
                 return $this->errorResponse(null, 'La cantidad de personas habilitadas por edad es menor a los cupos a asignar');
             }
 
-            //vdc04045
 
             $data = array_merge($request->validated(), [
                 'aceptado_hombres' => $aceptado_hombres,

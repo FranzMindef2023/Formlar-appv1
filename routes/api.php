@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\FuerzasController;
 use App\Http\Controllers\Api\CuposUnidadesEducativaController;
 use App\Http\Controllers\Api\PremilitarController;
+use App\Http\Controllers\Api\ReportesController;
 use App\Http\Controllers\Api\UnidadesEducativaController;
 use App\Http\Controllers\Api\VistaPorcentajeController;
 use App\Models\Division;
@@ -30,14 +31,21 @@ Route::group([
 });
 
 Route::post('assign-role', [UserController::class, 'asignarRoles']);
+// premilitar
 Route::get('premilitar/estoy-invitado/{ci}', [PremilitarController::class, 'am_i_invited']);
 
+//reportes
+Route::get('reportes/premilitares/{id}', [ReportesController::class, 'ei']);
+
+
+
+// protected
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('fuerzas', FuerzasController::class);
     Route::apiResource('departamentos', DepartamentoController::class);
     Route::apiResource('divisiones', DivisionController::class);
-    Route::apiResource('unidades-educativas', UnidadesEducativaController::class);
     Route::apiResource('centros-reclutamiento', CentrosReclutamientoController::class);
+    Route::apiResource('unidades-educativas', UnidadesEducativaController::class);
 
 
     Route::prefix('gestion')->group(function () {
