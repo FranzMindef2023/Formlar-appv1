@@ -14,12 +14,12 @@ class AperturaSeeder extends Seeder
     public function run(): void
     {
         $apertura = [
-            "gestion" =>  2024,
-            "cantidad" =>  500,
-            "fecha_limite" =>  "2024-12-31",
-            "fecha_apertura" =>  "2024-01-01",
+            "gestion" =>  2025,
+            "cantidad" =>  91000,
+            "fecha_limite" =>  "2025-08-31",
+            "fecha_apertura" =>  date("Y-m-d"),
             "edad_min" =>  17,
-            "edad_max" =>  19,
+            "edad_max" =>  21,
             "cite_junta" =>  "Ejemplo de texto para cite junta.",
             "firma_mae" =>  "Ejemplo de texto para firma MAE.",
             "created_at" => now(),

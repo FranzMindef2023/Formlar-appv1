@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class CuposDivision extends Model
 {
     use HasFactory;
-
     protected $guarded = [];
+
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'codigo_division', 'codigo');
+    }
 }

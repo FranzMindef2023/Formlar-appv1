@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('premilitars', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('codigo_unidad_educativa');
+            $table->unsignedBigInteger('codigo_unidad_educativa')->nullable();
             $table->text('rude');
             $table->text('apellido_paterno');
             $table->text('apellido_materno');
             $table->text('nombres');
-            $table->unsignedBigInteger('ci');
-            $table->text('complemento');
-            $table->text('expedido');
+            $table->unsignedBigInteger('ci')->nullable();
+            $table->text('complemento')->nullable();
+            $table->text('expedido')->nullable();
 
             $table->date('fecha_nacimiento');
             $table->text('sexo');
@@ -39,7 +39,10 @@ return new class extends Migration
             $table->date('fecha_presentacion');
             $table->text('hora_presentacion');
 
+            $table->boolean('habilitado_edad');
+            $table->boolean('habilitado_notas');
             $table->boolean('invitado');
+
             $table->text('descripcion');
 
             $table->timestamp('fecha_registro');

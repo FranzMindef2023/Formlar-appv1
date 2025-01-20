@@ -13,18 +13,19 @@ return new class extends Migration
     {
         Schema::create('estudiantes', function (Blueprint $table) {
             $table->id("correlativo");
+
             $table->text("departamento");
             $table->text("unidad_educativa");
-            $table->unsignedBigInteger("codigo");
+            $table->unsignedBigInteger("codigo")->nullable();
 
             $table->text("rude");
             $table->text("apellido_paterno");
             $table->text("apellido_materno");
 
             $table->text("nombres");
-            $table->unsignedBigInteger("ci");
-            $table->text("complemento");
-            $table->text("expedido");
+            $table->unsignedBigInteger("ci")->nullable();
+            $table->text("complemento")->nullable();
+            $table->text("expedido")->nullable();
 
             $table->date("fecha_nacimiento");
 

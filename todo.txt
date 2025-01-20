@@ -1,0 +1,3 @@
+1. Trigger to fill the premilitars table, with status, in function with the table aperturas
+2. Cumple la edad o no atributte in premilitars
+3. Make relationship with premilitar_aperturas

@@ -26,15 +26,7 @@ class UpdateCuposCentrosReclutamientoRequest extends FormRequest
         return [
             'codigo_division' => 'required|integer|between:1,10',
             'cupo' => 'required|integer|min:1',
-            'gestion' => [
-                'required',
-                'integer',
-                function ($value, $attr, $fail) {
-                    if ($value < date('Y')) {
-                        $fail('El campo ' . $attr . ' debe ser igual o mayor que la gestion actual.');
-                    }
-                }
-            ],
+            'gestion' => 'required|integer|gte:' . date('Y'),
         ];
     }
     public function messages(): array
@@ -53,8 +45,9 @@ class UpdateCuposCentrosReclutamientoRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'message' => 'Something went wrong with the validation.',
+            'success' => false,
             'error' => $validator->errors(),
+            'message' => 'Something went wrong with the validation.',
         ], 422));
     }
 }

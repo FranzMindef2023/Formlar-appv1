@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp("fecha_apertura");
             $table->integer("edad_min");
             $table->integer("edad_max");
-            $table->text("cite_junta");
-            $table->text("firma_mae");
+            $table->text("cite_junta")->nullable();
+            $table->text("firma_mae")->nullable();
 
             $table->timestamps();
         });
