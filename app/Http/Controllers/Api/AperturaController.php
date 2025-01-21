@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAperturaRequest;
-use App\Http\Requests\UpdateAperturaRequest;
 use App\Models\Apertura;
 use Illuminate\Http\Request;
 
@@ -47,8 +46,7 @@ class AperturaController extends Controller
 
             return $this->successResponse($apertura, 'Apertura created successfully', 201);
         } catch (\Exception $e) {
-
-            return $this->errorResponse($e, 'An unexpected error occurred. Please try again.', 500);
+            return $this->errorResponse($e->getMessage(), 'An unexpected error occurred. Please try again.', 500);
         }
     }
 
