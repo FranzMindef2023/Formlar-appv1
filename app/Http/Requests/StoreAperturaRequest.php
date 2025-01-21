@@ -33,7 +33,7 @@ class StoreAperturaRequest extends FormRequest
             'edad_min' => 'required|integer|between:0,40',
             'edad_max' => 'required|integer|between:0,40|gte:edad_min',
             'cite_junta' => 'nullable|string|max:65535',
-            'firma_mae' => 'nullable|string|max:65535',
+            'firma_mae' => 'nullable|string|max:2048',
         ];
     }
 
