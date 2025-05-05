@@ -92,4 +92,4 @@ CRERA CONTROLADORES DESDE EL TERMINAL
 ejecuta la sembradora con el siguiente comando:
 ## php artisan db:seed --class=TipoNovedadSeeder
 
-*/
+*/# Formlar-appv1
