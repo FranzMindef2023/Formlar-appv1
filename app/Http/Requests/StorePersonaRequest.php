@@ -72,6 +72,9 @@ class StorePersonaRequest extends FormRequest
 
             'id_centro_reclutamiento.required' => 'El centro de reclutamiento es obligatorio.',
             'id_centro_reclutamiento.exists' => 'El centro de reclutamiento seleccionado no existe.',
+
+            'g-recaptcha-response.required' => 'Por favor, verifica que no eres un robot.',
+            'g-recaptcha-response' => 'La verificación de reCAPTCHA ha fallado. Intenta nuevamente.',
         ];
     }
 
