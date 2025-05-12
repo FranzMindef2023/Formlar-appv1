@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PersonasController;
+use App\Http\Controllers\Api\UbicacionGeograficaController;
 
 
 Route::group([
@@ -19,4 +20,6 @@ Route::group([
     Route::post('register', [AuthController::class, 'register']);
     Route::post('me', [AuthController::class, 'me']);
 });
+Route::get('departamentos', [UbicacionGeograficaController::class, 'getDepartamentos']);
+Route::get('/municipios/{idDepartamento}', [UbicacionGeograficaController::class, 'getMunicipios']);
 Route::middleware(['throttle:5,1'])->post('preinscripcion', [PersonasController::class, 'store']);

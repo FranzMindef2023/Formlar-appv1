@@ -32,6 +32,7 @@ class PersonasController extends Controller
      */
     public function store(StorePersonaRequest $request)
     {
+        return $request->all();
         try {
             $data = $request->validated();
 
