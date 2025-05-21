@@ -10,10 +10,15 @@ class UbicacionGeograficaController extends Controller
 {
     public function getDepartamentos(){
         $departamentos = DB::table('ubicacion_geografica')
-            ->whereNull('id_padre')
-            ->select('idubigeo as id', 'descubigeo as nombre','siglaubigeo as sigla')
-            ->orderBy('idubigeo')
-            ->get();
+                        ->whereNull('id_padre')
+                        ->whereBetween('ubigeo', [1, 9]) // ubigeo del 1 al 9
+                        ->where(function($query) {
+                            $query->whereRaw("codigoubigeo ~ '^[1-9]$'"); // codigoubigeo "1" al "9"
+                        })
+                        ->select('idubigeo as id', 'descubigeo as nombre', 'siglaubigeo as sigla')
+                        ->orderBy('ubigeo')
+                        ->get();
+
 
         return response()->json($departamentos);
     }

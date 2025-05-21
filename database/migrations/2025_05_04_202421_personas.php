@@ -17,22 +17,22 @@ return new class extends Migration
             $table->string('primer_apellido', 100)->nullable();
             $table->string('segundo_apellido', 100)->nullable();
             $table->string('ci', 20)->unique();
+            $table->string('complemento_ci', 10)->nullable();
+            $table->string('expedido', 5)->nullable();
+            $table->string('celular', 20);
+            $table->string('gestion', 10); // Ej: '2025'
+            $table->string('correo', 100)->nullable();
             $table->date('fecha_nacimiento');
-            $table->boolean('status')->default(true); // Campo de estado activo/inactivo
-        
-            // Claves foráneas hacia ubicacion_geografica
-            $table->unsignedBigInteger('id_departamento');
-            $table->unsignedBigInteger('id_lugar_nacimiento');
-
-        
-            $table->unsignedBigInteger('id_centro_reclutamiento');
-        
+            $table->enum('sexo', ['M', 'F'])->nullable();
+            $table->string('direccion', 255)->nullable();
+            $table->string('foto', 255)->nullable();
+            $table->string('nacionalidad', 50)->default('BOLIVIANA');
+            $table->uuid('uuid')->nullable()->unique();
+            $table->unsignedBigInteger('creado_por')->nullable();
+            $table->ipAddress('ip_registro')->nullable();
+            $table->string('origen_registro', 50)->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
-        
-            // Relaciones foráneas corregidas
-            $table->foreign('id_departamento')->references('idubigeo')->on('ubicacion_geografica');
-            $table->foreign('id_lugar_nacimiento')->references('idubigeo')->on('ubicacion_geografica');
-            $table->foreign('id_centro_reclutamiento')->references('id')->on('unidades_especiales');
         });
         
     }

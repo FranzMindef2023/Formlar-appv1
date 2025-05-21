@@ -32,7 +32,12 @@ class PersonasController extends Controller
      */
     public function store(StorePersonaRequest $request)
     {
-        return $request->all();
+        // return $request->all();
+        return response()->json([
+            'status' => true,
+            'message' => 'La persona fue registrada exitosamente.',
+            'data' => $request->all()
+        ], 200);
         try {
             $data = $request->validated();
 

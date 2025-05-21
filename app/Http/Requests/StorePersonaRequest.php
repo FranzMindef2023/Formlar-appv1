@@ -36,7 +36,11 @@ class StorePersonaRequest extends FormRequest
             'id_departamento' => 'required|integer|exists:ubicacion_geografica,idubigeo',
             'id_lugar_nacimiento' => 'required|integer|exists:ubicacion_geografica,idubigeo',
             'id_centro_reclutamiento' => 'required|integer|exists:unidades_especiales,id',
-            'g-recaptcha-response' => ['required', new \App\Rules\GoogleRecaptcha],
+            'token' => ['required', new \App\Rules\GoogleRecaptcha],
+            'celular' => [
+            'required',
+            'regex:/^[6-7]\d{7}$/',
+            ],
         ];
     }
 
@@ -73,8 +77,11 @@ class StorePersonaRequest extends FormRequest
             'id_centro_reclutamiento.required' => 'El centro de reclutamiento es obligatorio.',
             'id_centro_reclutamiento.exists' => 'El centro de reclutamiento seleccionado no existe.',
 
-            'g-recaptcha-response.required' => 'Por favor, verifica que no eres un robot.',
-            'g-recaptcha-response' => 'La verificación de reCAPTCHA ha fallado. Intenta nuevamente.',
+            'token.required' => 'Por favor, verifica que no eres un robot.',
+            'token' => 'La verificación de reCAPTCHA ha fallado. Intenta nuevamente.',
+
+            'celular.required' => 'El número de celular es obligatorio.',
+            'celular.regex' => 'El número de celular debe comenzar con 6 o 7 y tener 8 dígitos.',
         ];
     }
 

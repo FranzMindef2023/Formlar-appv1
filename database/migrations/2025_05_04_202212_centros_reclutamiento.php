@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unidades_especiales', function (Blueprint $table) {
+        Schema::create('unidades_militares', function (Blueprint $table) {
             $table->id(); // id autoincremental
             $table->string('codigo', 20)->unique();
             $table->string('descripcion', 255);
@@ -28,7 +28,7 @@ return new class extends Migration
         
             // Relaciones foráneas
             $table->foreign('id_ubicacion')->references('idubigeo')->on('ubicacion_geografica');
-            $table->foreign('id_padre')->references('id')->on('unidades_especiales')->onDelete('set null');
+            $table->foreign('id_padre')->references('id')->on('unidades_militares')->onDelete('set null');
         });        
         
     }
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unidades_especiales');
+        Schema::dropIfExists('unidades_militares');
     }
 };

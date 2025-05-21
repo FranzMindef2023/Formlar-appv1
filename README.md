@@ -93,3 +93,10 @@ ejecuta la sembradora con el siguiente comando:
 ## php artisan db:seed --class=TipoNovedadSeeder
 
 */# Formlar-appv1
+##permisos al archivo
+sudo chown -R www-data:www-data /var/www/html/Formlar-appv1/storage
+sudo chown -R www-data:www-data /var/www/html/Formlar-appv1/bootstrap/cache
+
+sudo chmod -R 775 /var/www/html/Formlar-appv1/storage
+sudo chmod -R 775 /var/www/html/Formlar-appv1/bootstrap/cache
+

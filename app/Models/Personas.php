@@ -23,6 +23,7 @@ class Personas extends Model implements Auditable
         'id_departamento',
         'id_lugar_nacimiento',
         'id_centro_reclutamiento',
+        'celular'
     ];
 
     protected $casts = [
