@@ -30,12 +30,15 @@ class StorePersonaRequest extends FormRequest
                 Rule::unique('personas', 'ci')->ignore($id, 'id'),
                 new CiValido(), // Aquí se aplica la regla personalizada
             ],
-            'fecha_nacimiento' => 'required|date|before:-17 years|after:-24 years',
+            'fecha_nacimiento' => 'required|date|before_or_equal:-17 years|after_or_equal:-22 years',
             'status' => 'required|boolean',
 
             'id_departamento' => 'required|integer|exists:ubicacion_geografica,idubigeo',
-            'id_lugar_nacimiento' => 'required|integer|exists:ubicacion_geografica,idubigeo',
-            'id_centro_reclutamiento' => 'required|integer|exists:unidades_especiales,id',
+            'lugar_expedicion' => 'required|integer|exists:ubicacion_geografica,idubigeo',
+            'id_lugar_recidencia' => 'required|integer|exists:ubicacion_geografica,idubigeo',
+
+            'id_departamento_presenta' => 'required|integer|exists:ubicacion_geografica,idubigeo',
+            'id_centro_reclutamiento' => 'required|integer|exists:unidades_militares,id',
             'token' => ['required', new \App\Rules\GoogleRecaptcha],
             'celular' => [
             'required',
@@ -69,7 +72,13 @@ class StorePersonaRequest extends FormRequest
             'status.boolean' => 'El estado debe ser verdadero o falso.',
 
             'id_departamento.required' => 'El departamento es obligatorio.',
-            'id_departamento.exists' => 'El departamento seleccionado no existe.',
+            'id_departamento.exists' => 'El departamento seleccionado no existe.', 
+
+            'id_departamento_presenta.required' => 'El departamento es obligatorio.',
+            'id_departamento_presenta.exists' => 'El departamento seleccionado no existe.',
+
+            'lugar_expedicion.required' => 'El departamento es obligatorio.',
+            'lugar_expedicion.exists' => 'El departamento seleccionado no existe.',
 
             'id_lugar_nacimiento.required' => 'El lugar de nacimiento es obligatorio.',
             'id_lugar_nacimiento.exists' => 'El lugar de nacimiento no existe.',

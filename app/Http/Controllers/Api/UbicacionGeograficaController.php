@@ -31,7 +31,26 @@ class UbicacionGeograficaController extends Controller
 
         return response()->json($municipios);
     }
+    public function getZonasGeograficas(){
+        $zonas = DB::table('zonas_geograficas')
+                    ->select('id', 'nombre')
+                    ->orderBy('nombre')
+                    ->get();
 
-    
+        return response()->json($zonas);
+    }
+    public function getDepartamentosZona($idZonaGeografica){
+        try {
+            $departamentos = DB::table('ubicacion_geografica')
+                ->whereNull('id_padre')
+                ->where('id_zona_geografica', $idZonaGeografica)
+                ->select('idubigeo as id', 'descubigeo as nombre', 'siglaubigeo as sigla')
+                ->orderBy('ubigeo')
+                ->get();
 
+            return response()->json($departamentos);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

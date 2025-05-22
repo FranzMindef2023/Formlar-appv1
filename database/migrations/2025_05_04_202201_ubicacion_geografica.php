@@ -17,12 +17,12 @@ return new class extends Migration
             $table->integer('ubigeo');
             $table->string('codigoubigeo', 20);
             $table->string('descubigeo', 100);
-            $table->string('nivel', 5);
+            $table->string('nivel', 25);
             $table->string('siglaubigeo', 30)->nullable();
             $table->timestamps();
         
             // Relación jerárquica a sí misma
-            $table->foreign('id_padre')->references('idubigeo')->on('ubicacion_geografica')->onDelete('cascade');
+            // $table->foreign('id_padre')->references('idubigeo')->on('ubicacion_geografica')->onDelete('cascade');
         });
         
     }

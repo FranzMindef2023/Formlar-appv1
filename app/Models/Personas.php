@@ -30,19 +30,4 @@ class Personas extends Model implements Auditable
         'fecha_nacimiento' => 'date',
         'status' => 'boolean',
     ];
-
-    public function departamento()
-    {
-        return $this->belongsTo(UbicacionGeografica::class, 'id_departamento', 'idubigeo');
-    }
-
-    public function lugarNacimiento()
-    {
-        return $this->belongsTo(UbicacionGeografica::class, 'id_lugar_nacimiento', 'idubigeo');
-    }
-
-    public function centroReclutamiento()
-    {
-        return $this->belongsTo(UnidadEspecial::class, 'id_centro_reclutamiento');
-    }
 }

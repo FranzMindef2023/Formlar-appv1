@@ -28,7 +28,7 @@ return new class extends Migration
             // Relaciones foráneas
             $table->foreign('id_ubicacion')->references('idubigeo')->on('ubicacion_geografica');
             $table->foreign('id_provincia')->references('idubigeo')->on('ubicacion_geografica'); // 🔼 Nueva FK
-            $table->foreign('id_padre')->references('id')->on('unidades_militares')->onDelete('set null');
+            // $table->foreign('id_padre')->references('id')->on('unidades_militares')->onDelete('set null');
         });
         
         
