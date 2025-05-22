@@ -22,6 +22,9 @@ return new class extends Migration
                 ->constrained('unidades_militares')
                 ->onDelete('restrict');
 
+            // NUEVO: Centro de presentación (opcional)
+            $table->unsignedBigInteger('id_centro_presentacion')->nullable();
+
             // Gestión (año)
             $table->string('gestion', 10);
 
@@ -40,8 +43,13 @@ return new class extends Migration
                 ->on('ubicacion_geografica')
                 ->onDelete('restrict');
 
-            // Restricción para evitar duplicados por lugar + gestión
-            $table->unique(['id_lugar_residencia', 'gestion']);
+            $table->foreign('id_centro_presentacion')
+                ->references('id')
+                ->on('unidades_militares') // puedes cambiar a 'ubicacion_geografica' si lo prefieres
+                ->onDelete('restrict');
+
+            // NUEVA restricción para evitar duplicados por lugar + unidad + gestión
+            $table->unique(['id_lugar_residencia', 'unidad_militar_id', 'gestion'], 'asignacion_unica');
         });
 
     }

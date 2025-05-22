@@ -32,4 +32,6 @@ class UbicacionGeograficaController extends Controller
         return response()->json($municipios);
     }
 
+    
+
 }

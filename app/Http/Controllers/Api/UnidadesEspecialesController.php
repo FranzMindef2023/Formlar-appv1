@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UnidadesEspecialesController extends Controller
 {
@@ -36,7 +37,14 @@ class UnidadesEspecialesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $unidades = DB::table('unidades_militares as um')
+        ->join('ubicacion_geografica as ug', 'um.provincia', '=', 'ug.idubigeo')
+        ->select('um.id', 'ug.descubigeo as nombre', 'ug.nivel', 'um.id_ubicacion')
+        ->where('um.id_ubicacion', $id)
+        ->where('um.status', true) // solo activos
+        ->get();
+
+        return response()->json($unidades);
     }
 
     /**

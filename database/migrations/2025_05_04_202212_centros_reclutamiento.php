@@ -15,21 +15,22 @@ return new class extends Migration
             $table->id(); // id autoincremental
             $table->string('codigo', 20)->unique();
             $table->string('descripcion', 255);
-        
-            // Clave foránea a ubicacion_geografica
+
+            // Claves foráneas
             $table->unsignedBigInteger('id_ubicacion');
-        
-            // Clave foránea a sí misma (unidad padre)
+            $table->unsignedBigInteger('id_provincia'); // 🔼 Nuevo campo
             $table->unsignedBigInteger('id_padre')->nullable();
-        
+
             $table->boolean('status')->default(true); // Campo de estado activo/inactivo
-        
+
             $table->timestamps();
-        
+
             // Relaciones foráneas
             $table->foreign('id_ubicacion')->references('idubigeo')->on('ubicacion_geografica');
+            $table->foreign('id_provincia')->references('idubigeo')->on('ubicacion_geografica'); // 🔼 Nueva FK
             $table->foreign('id_padre')->references('id')->on('unidades_militares')->onDelete('set null');
-        });        
+        });
+        
         
     }
 
