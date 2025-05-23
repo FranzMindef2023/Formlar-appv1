@@ -18,12 +18,21 @@ class Personas extends Model implements Auditable
         'primer_apellido',
         'segundo_apellido',
         'ci',
+        'complemento_ci',
+        'expedido',
+        'celular',
+        'correo',
         'fecha_nacimiento',
-        'status',
-        'id_departamento',
-        'id_lugar_nacimiento',
-        'id_centro_reclutamiento',
-        'celular'
+        'sexo',
+        'direccion',
+        'foto',
+        'nacionalidad',
+        'uuid',
+        'creado_por',
+        'ip_registro',
+        'origen_registro',
+        'gestion',
+        'status'
     ];
 
     protected $casts = [

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 use App\Rules\CiValido;
+use App\Rules\EdadValida;
 
 class StorePersonaRequest extends FormRequest
 {
@@ -30,7 +31,7 @@ class StorePersonaRequest extends FormRequest
                 Rule::unique('personas', 'ci')->ignore($id, 'id'),
                 new CiValido(), // Aquí se aplica la regla personalizada
             ],
-            'fecha_nacimiento' => 'required|date|before_or_equal:-17 years|after_or_equal:-22 years',
+            'fecha_nacimiento' => ['required', 'date', new EdadValida(17, 22)],
             'status' => 'required|boolean',
 
             'id_departamento' => 'required|integer|exists:ubicacion_geografica,idubigeo',
@@ -65,8 +66,6 @@ class StorePersonaRequest extends FormRequest
 
             'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
             'fecha_nacimiento.date' => 'Debe ser una fecha válida.',
-            'fecha_nacimiento.before' => 'La persona no cumple con la edad requerida.',
-            'fecha_nacimiento.after' => 'La persona no cumple con la edad requerida.',
 
             'status.required' => 'El estado es obligatorio.',
             'status.boolean' => 'El estado debe ser verdadero o falso.',

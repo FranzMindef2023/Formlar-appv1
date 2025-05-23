@@ -58,8 +58,8 @@ class PersonasController extends Controller
             ResidenciasActuales::create([
                 'persona_id' => $persona->id,
                 'gestion' => now()->year,
-                'id_departamento' => $data['departamento_nacimiento'],
-                'id_lugar_recidencia' => $data['lugarNacimiento'],
+                'id_departamento' => $data['id_departamento'],
+                'id_lugar_recidencia' => $data['id_lugar_recidencia'],
                 'status' => true,
             ]);
 
@@ -67,8 +67,8 @@ class PersonasController extends Controller
             DestinosPresentacion::create([
                 'persona_id' => $persona->id,
                 'gestion' => now()->year,
-                'id_departamento_presenta' => $data['departamentopresenta'],
-                'id_centro_reclutamiento' => $data['localidad'],
+                'id_departamento_presenta' => $data['id_departamento_presenta'],
+                'id_centro_reclutamiento' => $data['id_centro_reclutamiento'],
                 'status' => true,
             ]);
             DB::commit();
