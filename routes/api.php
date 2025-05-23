@@ -26,3 +26,4 @@ Route::get('zonasgeograficasdepartamentos/{idzona}', [UbicacionGeograficaControl
 Route::get('municipios/{idDepartamento}', [UbicacionGeograficaController::class, 'getMunicipios']);
 Route::middleware(['throttle:5,1'])->post('preinscripcion', [PersonasController::class, 'store']);
 Route::get('provinciasum/{id}', [UnidadesEspecialesController::class, 'show']);
+Route::get('personas/consultar', [PersonasController::class, 'consultarDatosPersona']);

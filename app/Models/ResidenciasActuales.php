@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Models\UbicacionGeografica;
+
+
 
 class ResidenciasActuales extends Model implements Auditable
 {
@@ -31,5 +34,14 @@ class ResidenciasActuales extends Model implements Auditable
     public function scopeGestionActual($query)
     {
         return $query->where('gestion', date('Y'));
+    }
+    public function departamento()
+    {
+        return $this->belongsTo(UbicacionGeografica::class, 'id_departamento', 'idubigeo');
+    }
+
+    public function lugarResidencia()
+    {
+        return $this->belongsTo(UbicacionGeografica::class, 'id_lugar_recidencia', 'idubigeo');
     }
 }

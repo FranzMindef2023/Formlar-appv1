@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Models\UbicacionGeografica;
+use App\Models\UnidadesMilitares;
+
 
 class DestinosPresentacion extends Model implements Auditable
 {
@@ -32,4 +35,14 @@ class DestinosPresentacion extends Model implements Auditable
     {
         return $query->where('gestion', date('Y'));
     }
+    public function departamentoPresenta()
+    {
+        return $this->belongsTo(UbicacionGeografica::class, 'id_departamento_presenta', 'idubigeo');
+    }
+
+    public function centroReclutamiento()
+    {
+        return $this->belongsTo(UnidadesMilitares::class, 'id_centro_reclutamiento', 'id');
+    }
+
 }
