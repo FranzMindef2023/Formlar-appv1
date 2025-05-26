@@ -45,6 +45,7 @@ class StorePersonaRequest extends FormRequest
             'required',
             'regex:/^[6-7]\d{7}$/',
             ],
+            'direccion' => 'required|string|min:5|max:250',
         ];
     }
 
@@ -90,6 +91,10 @@ class StorePersonaRequest extends FormRequest
 
             'celular.required' => 'El número de celular es obligatorio.',
             'celular.regex' => 'El número de celular debe comenzar con 6 o 7 y tener 8 dígitos.',
+
+            'direccion.required' => 'La dirección es obligatoria.',
+            'direccion.min' => 'La dirección debe tener al menos 5 caracteres.',
+            'direccion.max' => 'La dirección no debe exceder los 250 caracteres.',
         ];
     }
 

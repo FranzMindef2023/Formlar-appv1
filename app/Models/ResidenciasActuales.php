@@ -22,6 +22,7 @@ class ResidenciasActuales extends Model implements Auditable
         'persona_id',
         'id_departamento',
         'id_lugar_recidencia',
+        'direccion',
         'status'
     ];
 

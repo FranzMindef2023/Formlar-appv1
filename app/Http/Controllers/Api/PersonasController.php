@@ -123,6 +123,7 @@ class PersonasController extends Controller
                 'gestion' => now()->year,
                 'id_departamento' => $data['id_departamento'],
                 'id_lugar_recidencia' => $data['id_lugar_recidencia'],
+                'direccion' => $data['direccion'], // ← NUEVA línea
                 'status' => true,
             ]);
 
@@ -202,7 +203,7 @@ class PersonasController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => 'Persona no encontrada.'
-                ], 404);
+                ], 200);
             }
 
             $residencia = ResidenciasActuales::with(['departamento', 'lugarResidencia'])

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('persona_id')->constrained('personas')->onDelete('cascade');
             $table->unsignedBigInteger('id_departamento');
             $table->unsignedBigInteger('id_lugar_recidencia');
+            $table->string('direccion', 250); // <-- nuevo campo
             $table->boolean('status')->default(true);
 
             $table->foreign('id_departamento')->references('idubigeo')->on('ubicacion_geografica')->onDelete('restrict');
