@@ -45,7 +45,13 @@ class StorePersonaRequest extends FormRequest
             'required',
             'regex:/^[6-7]\d{7}$/',
             ],
-            'direccion' => 'required|string|min:5|max:250',
+            'direccion' => [
+                'required',
+                'string',
+                'min:5',
+                'max:250',
+                'regex:/^[A-Za-z0-9\s\-#.,ºáéíóúÁÉÍÓÚñÑ]+$/u'
+            ],
         ];
     }
 

@@ -228,7 +228,7 @@ class PersonasController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Datos encontrados.',
+                'message' => 'Datos encontrados: la persona ya está registrada.',
                 'data' => [
                     'persona' => $persona,
                     'residencia_actual' => $residencia,
