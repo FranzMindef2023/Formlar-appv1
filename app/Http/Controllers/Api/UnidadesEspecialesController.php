@@ -38,7 +38,7 @@ class UnidadesEspecialesController extends Controller
     public function show(string $id)
     {
         $unidades = DB::table('unidades_militares as um')
-        ->join('ubicacion_geografica as ug', 'um.provincia', '=', 'ug.idubigeo')
+        ->join('ubicacion_geografica as ug', 'um.id_provincia', '=', 'ug.idubigeo')
         ->select('um.id', 'ug.descubigeo as nombre', 'ug.nivel', 'um.id_ubicacion')
         ->where('um.id_ubicacion', $id)
         ->where('um.status', true) // solo activos

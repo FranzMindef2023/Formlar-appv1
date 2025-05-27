@@ -14,9 +14,9 @@ class ZonasGeograficasSeeder extends Seeder
     public function run(): void
     {
         DB::table('zonas_geograficas')->insert([
-            ['nombre' => 'ALTIPLANO', 'descripcion' => 'Región andina elevada, clima frío y seco.'],
-            ['nombre' => 'VALLES', 'descripcion' => 'Región intermedia con clima templado y tierras fértiles.'],
-            ['nombre' => 'LLANOS', 'descripcion' => 'Región de tierras bajas tropicales y húmedas.'],
+            ['nombre' => 'ZONA OCCIDENTE', 'descripcion' => 'Región andina elevada, clima frío y seco.'],
+            ['nombre' => 'ZONA VALLES', 'descripcion' => 'Región intermedia con clima templado y tierras fértiles.'],
+            ['nombre' => 'ZONA ORIENTE', 'descripcion' => 'Región de tierras bajas tropicales y húmedas.'],
             ]);
     }
 }

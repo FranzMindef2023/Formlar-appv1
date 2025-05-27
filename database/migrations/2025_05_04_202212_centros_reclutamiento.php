@@ -18,8 +18,12 @@ return new class extends Migration
 
             // Claves foráneas
             $table->unsignedBigInteger('id_ubicacion');
-            $table->unsignedBigInteger('id_provincia'); // 🔼 Nuevo campo
+            $table->unsignedBigInteger('id_provincia'); // 🔼 Provincia en ubicación geográfica
             $table->unsignedBigInteger('id_padre')->nullable();
+            $table->unsignedBigInteger('id_fuerza'); // 🔼 NUEVO campo: Fuerza militar (Ejército, Armada...)
+            $table->boolean('es_centro_reclutamiento')->default(false);
+            $table->date('fecha_presentacion')->nullable();
+            $table->time('hora_presentacion')->nullable();
 
             $table->boolean('status')->default(true); // Campo de estado activo/inactivo
 
@@ -27,9 +31,11 @@ return new class extends Migration
 
             // Relaciones foráneas
             $table->foreign('id_ubicacion')->references('idubigeo')->on('ubicacion_geografica');
-            $table->foreign('id_provincia')->references('idubigeo')->on('ubicacion_geografica'); // 🔼 Nueva FK
+            $table->foreign('id_provincia')->references('idubigeo')->on('ubicacion_geografica');
+            $table->foreign('id_fuerza')->references('id')->on('fuerzas'); // 🔼 Nueva FK hacia tabla fuerzas
             // $table->foreign('id_padre')->references('id')->on('unidades_militares')->onDelete('set null');
         });
+
         
         
     }

@@ -19,9 +19,14 @@ return new class extends Migration
             $table->string('descubigeo', 100);
             $table->string('nivel', 25);
             $table->string('siglaubigeo', 30)->nullable();
+
+            // NUEVO: Relación con zona geográfica
+            $table->unsignedBigInteger('id_zona_geografica')->nullable();
+            $table->foreign('id_zona_geografica')->references('id')->on('zonas_geograficas')->onDelete('set null');
+
             $table->timestamps();
-        
-            // Relación jerárquica a sí misma
+
+            // Relación jerárquica a sí misma (descomentar si deseas activarla)
             // $table->foreign('id_padre')->references('idubigeo')->on('ubicacion_geografica')->onDelete('cascade');
         });
         
