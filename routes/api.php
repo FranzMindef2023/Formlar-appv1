@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PersonasController;
 use App\Http\Controllers\Api\UbicacionGeograficaController;
 use App\Http\Controllers\Api\UnidadesEspecialesController;
+use App\Http\Controllers\Api\FuerzaController;
 
 Route::group([
     'middleware' => 'api',
@@ -27,3 +28,5 @@ Route::get('municipios/{idDepartamento}', [UbicacionGeograficaController::class,
 Route::middleware(['throttle:5,1'])->post('preinscripcion', [PersonasController::class, 'store']);
 Route::get('provinciasum/{id}', [UnidadesEspecialesController::class, 'show']);
 Route::get('personas/consultar', [PersonasController::class, 'consultarDatosPersona']);
+
+Route::get('fuerzas', [FuerzaController::class, 'index']);

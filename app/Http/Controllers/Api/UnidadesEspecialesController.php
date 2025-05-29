@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\UnidadesMilitares;
 
 class UnidadesEspecialesController extends Controller
 {
@@ -47,6 +48,66 @@ class UnidadesEspecialesController extends Controller
         ->get();
 
         return response()->json($unidades);
+    }
+    public function listarCentrosReclutamiento(Request $request)
+    {
+        // Validar que venga id_fuerza
+        $request->validate([
+            'id_fuerza' => 'required|integer|exists:fuerzas,id'
+        ]);
+
+        $centros =UnidadesMilitares::query()
+            ->where('es_centro_reclutamiento', true)
+            ->where('status', true)
+            ->where('id_fuerza', $request->id_fuerza)
+            ->select('id', 'descripcion')
+            ->orderBy('descripcion')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $centros
+        ],200);
+    }
+    public function unidadesPorCentro(Request $request)
+    {
+        // Validar que venga id_fuerza
+        $request->validate([
+            'id_centro_reclutamiento' => 'required|integer|exists:unidades_militares,id'
+        ]);
+    
+
+        $unidades =UnidadesMilitares::where('id_centro_reclutamiento', $request->id_centro_reclutamiento)
+            ->where('status', true)
+            ->select('id', 'descripcion')
+            ->orderBy('descripcion')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $unidades
+        ]);
+    }
+    public function listarUnidadesMilitares(Request $request)
+    {
+        // Validar que venga id_fuerza
+        $request->validate([
+            'id_fuerza' => 'required|integer|exists:fuerzas,id'
+        ]);
+
+        $centros = UnidadesMilitares::query()
+            ->where('es_centro_reclutamiento', false)                // No son centros de reclutamiento
+            ->whereNotNull('id_centro_reclutamiento')               // Están asignados a un centro
+            ->where('status', true)                                 // Solo activos
+            ->where('id_fuerza', $request->id_fuerza)               // De una fuerza específica
+            ->select('id', 'descripcion')
+            ->orderBy('descripcion')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $centros
+        ],200);
     }
 
     /**
