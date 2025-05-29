@@ -41,6 +41,8 @@ class UnidadesEspecialesController extends Controller
         ->join('ubicacion_geografica as ug', 'um.id_provincia', '=', 'ug.idubigeo')
         ->select('um.id', 'ug.descubigeo as nombre', 'ug.nivel', 'um.id_ubicacion')
         ->where('um.id_ubicacion', $id)
+        ->where('um.es_centro_reclutamiento', false)
+        ->whereNotNull('um.id_centro_reclutamiento')
         ->where('um.status', true) // solo activos
         ->get();
 

@@ -10,6 +10,7 @@ use App\Models\Personas;
 use App\Models\ResidenciasActuales;
 use App\Models\DestinosPresentacion;
 use App\Models\AsignacionesPresentacion;
+use App\Models\UnidadesMilitares;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -141,10 +142,15 @@ class PersonasController extends Controller
             $destino->load(['departamentoPresenta', 'centroReclutamiento']);
 
             // Buscar asignación exacta para mostrar lugar y hora de presentación
-            $asignacion = AsignacionesPresentacion::with(['unidadMilitar', 'centroPresentacion'])
-            ->where('id_lugar_residencia', $residencia->id_departamento)
-            ->where('unidad_militar_id', $destino->id_centro_reclutamiento)
-            ->where('gestion', (string) now()->year) // 👈 conversión a string
+            $unidad = UnidadesMilitares::with([
+                'centroReclutamiento:id,descripcion,id_ubicacion,id_provincia',
+                'centroReclutamiento.ubicacion:idubigeo,descubigeo',
+                'centroReclutamiento.provincia:idubigeo,descubigeo',
+                'ubicacion:idubigeo,descubigeo',
+                'provincia:idubigeo,descubigeo'
+            ])
+            ->select('id', 'descripcion', 'fecha_presentacion', 'hora_presentacion', 'id_centro_reclutamiento', 'id_ubicacion', 'id_provincia')
+            ->where('id', $destino->id_centro_reclutamiento)
             ->where('status', true)
             ->first();
 
@@ -159,7 +165,7 @@ class PersonasController extends Controller
                     'persona' => $persona,
                     'residencia_actual' => $residencia,
                     'destino_presentacion' => $destino,
-                    'asignacion_presentacion' => $asignacion
+                    'asignacion_presentacion' => $unidad
                 ]
             ], 200);
 
@@ -218,12 +224,25 @@ class PersonasController extends Controller
 
             $asignacion = null;
             if ($residencia && $destino) {
-                $asignacion = AsignacionesPresentacion::with(['unidadMilitar', 'centroPresentacion'])
-                    ->where('id_lugar_residencia', $residencia->id_departamento)
-                    ->where('unidad_militar_id', $destino->id_centro_reclutamiento)
-                    ->where('gestion', (string) now()->year)
-                    ->where('status', true)
-                    ->first();
+                $asignacion = UnidadesMilitares::with([
+                    'centroReclutamiento:id,descripcion,id_ubicacion,id_provincia',
+                    'centroReclutamiento.ubicacion:idubigeo,descubigeo',
+                    'centroReclutamiento.provincia:idubigeo,descubigeo',
+                    'ubicacion:idubigeo,descubigeo',
+                    'provincia:idubigeo,descubigeo'
+                ])
+                ->select(
+                    'id',
+                    'descripcion',
+                    'fecha_presentacion',
+                    'hora_presentacion',
+                    'id_centro_reclutamiento',
+                    'id_ubicacion',
+                    'id_provincia'
+                )
+                ->where('id', $destino->id_centro_reclutamiento)
+                ->where('status', true)
+                ->first();
             }
 
             return response()->json([

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->boolean('status')->default(true); // Campo de estado activo/inactivo
 
             $table->timestamps();
+             $table->unsignedBigInteger('id_centro_reclutamiento');
 
             // Relaciones foráneas
             $table->foreign('id_ubicacion')->references('idubigeo')->on('ubicacion_geografica');
