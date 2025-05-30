@@ -13,7 +13,7 @@ class FuerzasController extends Controller
      */
     public function index()
     {
-        $fuerzas =Fuerza::select('id', 'nombre')->orderBy('id')->get();
+        $fuerzas =Fuerzas::select('id', 'nombre')->orderBy('id')->get();
 
         return response()->json([
             'status' => true,

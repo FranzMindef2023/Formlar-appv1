@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PersonasController;
 use App\Http\Controllers\Api\UbicacionGeograficaController;
 use App\Http\Controllers\Api\UnidadesEspecialesController;
-use App\Http\Controllers\Api\FuerzaController;
+use App\Http\Controllers\Api\FuerzasController;
 
 Route::group([
     'middleware' => 'api',
@@ -29,4 +29,12 @@ Route::middleware(['throttle:5,1'])->post('preinscripcion', [PersonasController:
 Route::get('provinciasum/{id}', [UnidadesEspecialesController::class, 'show']);
 Route::get('personas/consultar', [PersonasController::class, 'consultarDatosPersona']);
 
-Route::get('fuerzas', [FuerzaController::class, 'index']);
+Route::get('fuerzas', [FuerzasController::class, 'index']);
+Route::get('centrosdereclutamiento', [UnidadesEspecialesController::class, 'listarCentrosReclutamiento']);
+Route::get('unidadesmilitares', [UnidadesEspecialesController::class, 'unidadesPorCentro']);
+Route::get('listaunidadesmilitares', [UnidadesEspecialesController::class, 'listarUnidadesMilitares']);
+
+Route::get('personas/resumen-por-unidad', [PersonasController::class, 'resumenRegistroPorUnidad']);
+Route::get('personas/filtrar', [PersonasController::class, 'filtrarPersonas']);
+
+

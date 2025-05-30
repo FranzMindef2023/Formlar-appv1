@@ -299,4 +299,68 @@ class PersonasController extends Controller
     {
         //
     }
+
+    public function resumenRegistroPorUnidad(Request $request)
+    {
+        $gestion = $request->input('gestion', now()->year);
+
+        $query = Personas::query()
+            ->join('destinos_presentacion as dp', 'dp.persona_id', '=', 'personas.id')
+            ->join('unidades_militares as um', 'dp.id_centro_reclutamiento', '=', 'um.id')
+            ->select(
+                'um.id as id_unidad_militar',
+                'um.descripcion as unidad_militar',
+                'dp.gestion',
+                \DB::raw('COUNT(personas.id) as cantidad_registrados')
+            )
+            ->where('dp.status', true)
+            ->where('dp.gestion', $gestion)
+            ->groupBy('um.id', 'um.descripcion', 'dp.gestion');
+
+        if ($request->filled('id_fuerza')) {
+            $query->where('um.id_fuerza', $request->id_fuerza);
+        }
+
+        if ($request->filled('id_unidad_militar')) {
+            $query->where('um.id', $request->id_unidad_militar);
+        }
+
+        $resumen = $query->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $resumen
+        ]);
+    }
+    public function filtrarPersonas(Request $request)
+    {
+        $query = Personas::query()
+            ->select('personas.*')
+            ->join('destinos_presentacion as dp', 'dp.persona_id', '=', 'personas.id')
+            ->join('unidades_militares as um', 'dp.id_centro_reclutamiento', '=', 'um.id');
+
+        // Aplicar filtros dinámicamente si están presentes
+        if ($request->filled('id_fuerza')) {
+            $query->where('um.id_fuerza', $request->id_fuerza);
+        }
+
+        if ($request->filled('id_centro_reclutamiento')) {
+            $query->where('um.id_centro_reclutamiento', $request->id_centro_reclutamiento);
+        }
+
+        if ($request->filled('id_unidad_militar')) {
+            $query->where('um.id', $request->id_unidad_militar);
+        }
+
+        $query->where('dp.status', true); // solo asignaciones activas
+
+        $personas = $query->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $personas
+        ]);
+    }
+
+
 }
