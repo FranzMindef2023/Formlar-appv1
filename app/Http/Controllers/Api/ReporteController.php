@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StorePersonaRequest;
+use App\Models\UnidadesMilitares;
 use App\Models\Personas;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
@@ -76,4 +78,63 @@ class ReporteController extends Controller
             ], 500);
         }
     }
+    //nuevo funcion de reportes
+    public function obtenerRelacionNominalPorCentro($id_centro_reclutamiento)
+    {
+        try {
+            $gestion = date('Y'); // Año actual
+
+            // Buscar unidad militar correspondiente al centro de reclutamiento
+            $unidad = UnidadesMilitares::
+                where('id', $id_centro_reclutamiento)
+                ->where('status', true)
+                ->first();
+
+            if (!$unidad) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No se encontró unidad militar para el centro de reclutamiento indicado.',
+                ], 404);
+            }
+
+            // Buscar personas asignadas a esa unidad en la gestión actual
+            $relacion = DB::table('destinos_presentacion as dp')
+                ->join('personas as p', 'dp.persona_id', '=', 'p.id')
+                ->where('dp.id_centro_reclutamiento', $id_centro_reclutamiento)
+                ->where('dp.gestion', $gestion)
+                ->where('dp.status', true)
+                ->select(
+                    'p.id',
+                    'p.nombres',
+                    'p.primer_apellido',
+                    'p.segundo_apellido',
+                    'p.ci',
+                    'p.complemento_ci',
+                    'p.expedido',
+                    'p.fecha_nacimiento'
+                )
+                ->orderBy('p.primer_apellido')
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'unidad_militar' => [
+                        'id_unidad_militar' => $unidad->id,
+                        'unidad_militar' => $unidad->descripcion,
+                        'gestion' => $gestion,
+                        'cantidad_registrados' => $relacion->count(),
+                    ],
+                    'relacion_nominal' => $relacion,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error al obtener la relación nominal.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

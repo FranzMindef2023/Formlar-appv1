@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PersonasController;
 use App\Http\Controllers\Api\UbicacionGeograficaController;
 use App\Http\Controllers\Api\UnidadesEspecialesController;
 use App\Http\Controllers\Api\FuerzasController;
+use App\Http\Controllers\Api\ReporteController;
 
 Route::group([
     'middleware' => 'api',
@@ -36,5 +37,7 @@ Route::get('listaunidadesmilitares', [UnidadesEspecialesController::class, 'list
 
 Route::get('personas/resumen-por-unidad', [PersonasController::class, 'resumenRegistroPorUnidad']);
 Route::get('personas/filtrar', [PersonasController::class, 'filtrarPersonas']);
+Route::get('relacion-nominal/{id_centro_reclutamiento}', [ReporteController::class, 'obtenerRelacionNominalPorCentro']);
+
 
 
