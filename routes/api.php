@@ -30,14 +30,17 @@ Route::middleware(['throttle:5,1'])->post('preinscripcion', [PersonasController:
 Route::get('provinciasum/{id}', [UnidadesEspecialesController::class, 'show']);
 Route::get('personas/consultar', [PersonasController::class, 'consultarDatosPersona']);
 
-Route::get('fuerzas', [FuerzasController::class, 'index']);
-Route::get('centrosdereclutamiento', [UnidadesEspecialesController::class, 'listarCentrosReclutamiento']);
-Route::get('unidadesmilitares', [UnidadesEspecialesController::class, 'unidadesPorCentro']);
-Route::get('listaunidadesmilitares', [UnidadesEspecialesController::class, 'listarUnidadesMilitares']);
 
-Route::get('personas/resumen-por-unidad', [PersonasController::class, 'resumenRegistroPorUnidad']);
-Route::get('personas/filtrar', [PersonasController::class, 'filtrarPersonas']);
-Route::get('relacion-nominal/{id_centro_reclutamiento}', [ReporteController::class, 'obtenerRelacionNominalPorCentro']);
+Route::middleware(['jwt.verify'])->group(function () {
+    Route::get('fuerzas', [FuerzasController::class, 'index']);
+    Route::get('centrosdereclutamiento', [UnidadesEspecialesController::class, 'listarCentrosReclutamiento']);
+    Route::get('unidadesmilitares', [UnidadesEspecialesController::class, 'unidadesPorCentro']);
+    Route::get('listaunidadesmilitares', [UnidadesEspecialesController::class, 'listarUnidadesMilitares']);
+
+    Route::get('personas/resumen-por-unidad', [PersonasController::class, 'resumenRegistroPorUnidad']);
+    Route::get('personas/filtrar', [PersonasController::class, 'filtrarPersonas']);
+    Route::get('relacion-nominal/{id_centro_reclutamiento}', [ReporteController::class, 'obtenerRelacionNominalPorCentro']);
+});
 
 
 
