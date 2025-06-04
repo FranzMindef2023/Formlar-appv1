@@ -39,4 +39,10 @@ class Personas extends Model implements Auditable
         'fecha_nacimiento' => 'date',
         'status' => 'boolean',
     ];
+
+    public function lugarExpedicion()
+    {
+        return $this->belongsTo(UbicacionGeografica::class, 'expedido', 'idubigeo');
+    }
+
 }

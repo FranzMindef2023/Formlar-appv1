@@ -11,6 +11,7 @@ use App\Models\ResidenciasActuales;
 use App\Models\DestinosPresentacion;
 use App\Models\AsignacionesPresentacion;
 use App\Models\UnidadesMilitares;
+use App\Models\UbicacionGeografica;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -140,6 +141,8 @@ class PersonasController extends Controller
             // 4. Cargar relaciones
             $residencia->load(['departamento', 'lugarResidencia']);
             $destino->load(['departamentoPresenta', 'centroReclutamiento']);
+            $persona->load('lugarExpedicion');
+
 
             // Buscar asignación exacta para mostrar lugar y hora de presentación
             $unidad = UnidadesMilitares::with([
@@ -162,7 +165,10 @@ class PersonasController extends Controller
                 'status' => true,
                 'message' => 'La persona fue registrada exitosamente.',
                 'data' => [
-                    'persona' => $persona,
+                    'persona' => [
+                        ...$persona->toArray(),
+                        'sigla_expedido' => $persona->lugarExpedicion->siglaubigeo ?? null
+                    ],
                     'residencia_actual' => $residencia,
                     'destino_presentacion' => $destino,
                     'asignacion_presentacion' => $unidad
@@ -211,11 +217,14 @@ class PersonasController extends Controller
                     'message' => 'Persona no encontrada.'
                 ], 200);
             }
-
+            // Cargar sigla de lugar de expedición
+            $persona->sigla_expedido = UbicacionGeografica::where('idubigeo', $persona->expedido)
+                ->value('siglaubigeo');
+                
             $residencia = ResidenciasActuales::with(['departamento', 'lugarResidencia'])
-                ->where('persona_id', $persona->id)
-                ->where('gestion', now()->year)
-                ->first();
+            ->where('persona_id', $persona->id)
+            ->where('gestion', now()->year)
+            ->first();
 
             $destino = DestinosPresentacion::with(['departamentoPresenta', 'centroReclutamiento'])
                 ->where('persona_id', $persona->id)
