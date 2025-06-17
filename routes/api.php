@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\UnidadesEspecialesController;
 use App\Http\Controllers\Api\FuerzasController;
 use App\Http\Controllers\Api\ReporteController;
 
+use App\Http\Controllers\Api\EstudiantesInvitadosController;
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -35,11 +37,15 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('fuerzas', [FuerzasController::class, 'index']);
     Route::get('centrosdereclutamiento', [UnidadesEspecialesController::class, 'listarCentrosReclutamiento']);
     Route::get('unidadesmilitares', [UnidadesEspecialesController::class, 'unidadesPorCentro']);
-    Route::get('listaunidadesmilitares', [UnidadesEspecialesController::class, 'listarUnidadesMilitares']);
+    Route::get('listaunidadesmilitares', [UnidadesEspecialesController::class, 'listarUnidadesMilitares']); 
+    Route::get('listadecentrosdereclutamiento', [UnidadesEspecialesController::class, 'listarCentrosdeReclutamiento']);
 
     Route::get('personas/resumen-por-unidad', [PersonasController::class, 'resumenRegistroPorUnidad']);
     Route::get('personas/filtrar', [PersonasController::class, 'filtrarPersonas']);
     Route::get('relacion-nominal/{id_centro_reclutamiento}', [ReporteController::class, 'obtenerRelacionNominalPorCentro']);
+
+    Route::get('invitaciones/resumen-por-unidad-militares', [EstudiantesInvitadosController::class, 'resumenInvitadosPorUnidad']);
+     Route::get('listado-invitados/{id_centro_reclutamiento}', [EstudiantesInvitadosController::class, 'listadoInvitadosPorReclutamiento']);
 });
 
 

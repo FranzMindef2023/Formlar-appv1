@@ -109,6 +109,26 @@ class UnidadesEspecialesController extends Controller
             'data' => $centros
         ],200);
     }
+    /**traer solo los centros de reclutamiento establecidos por DGT para los Pre-militares */
+    public function listarCentrosdeReclutamiento(Request $request)
+    {
+        // Validar que venga id_fuerza
+        $request->validate([
+            'id_fuerza' => 'required|integer|exists:fuerzas,id'
+        ]);
+
+        $centros = UnidadesMilitares::query()            // Están asignados a un centro
+            ->where('premilitar', true)                                 // Solo activos
+            ->where('id_fuerza', $request->id_fuerza)               // De una fuerza específica
+            ->select('codigo as id', 'descripcion')
+            ->orderBy('codigo')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $centros
+        ],200);
+    }
 
     /**
      * Show the form for editing the specified resource.
